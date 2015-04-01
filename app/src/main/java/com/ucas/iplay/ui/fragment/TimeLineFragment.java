@@ -55,7 +55,6 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     private boolean mLoadFromCache;
 
     private TagModel[] mTags;
-    private HttpUtil mHttpUtil;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         mEventsDataHelper = new EventsDataHelper(context);
         mTagsDataHelper = new TagsDataHelper(context);
         mEventCursorAdapter = new EventCursorAdapter(context);
-        mHttpUtil = new HttpUtil(getActivity());
     }
 
     @Override
@@ -73,6 +71,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         View view = inflater.inflate(R.layout.listview_timeline, container, false);
         mListView = (QuickReturnListView) view.findViewById(R.id.lv_maintimeline);
         footerTagsView = (FooterTagsView) view.findViewById(R.id.ftv_footer);
+        footerTagsView.setMode(FooterTagsView.TagMode.SINGLE);
 
         mTags = mTagsDataHelper.query();
         if (mTags != null || mTags.length != 0) {
@@ -175,15 +174,17 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
                         mEventsDataHelper.empty();
                     }
                     mEventsDataHelper.bulkInsert(getModels(response.getJSONArray("activities")));
+                    mPage++;
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                mSwipeLayout.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e(TAG, "----> failure");
+                Log.e(TAG, "----> failure : network error");
+                mSwipeLayout.setRefreshing(false);
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
         });
@@ -197,7 +198,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     public void onRefresh() {
         mPage = 1;
         getData();
-//        mSwipeLayout.setRefreshing(true);
+        mSwipeLayout.setRefreshing(true);
     }
 
     /**
@@ -208,6 +209,9 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         Log.e(TAG, "----on load more----");
 
         // 从网络加载更多的数据
+        if (!mLoadFromCache) {
+            getData();
+        }
 
     }
 

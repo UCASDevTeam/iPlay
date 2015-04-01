@@ -33,6 +33,9 @@
             android:name=".ui.SettingActivity"
             android:label="@string/title_activity_setting" >
         </activity>
+        <activity android:name=".ui.PostNewActivity"
+            android:label="@string/title_activity_create" >
+        </activity>
 
         <provider
             android:name=".core.DataProvider"

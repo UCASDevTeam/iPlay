@@ -14,38 +14,17 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+
 /**
  * Created by ivanchou on 1/21/2015.
  */
 public class HttpUtil {
     private final String TAG = this.getClass().getSimpleName();
-    private Context mContext;
-    private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public HttpUtil(Context context) {
-        this.mContext = context;
-        client.setTimeout(10 * 1000);
-        client.setCookieStore(new PersistentCookieStore(mContext));
-        client.addHeader("user-agent", "ucasdemo");
+    private HttpUtil() {
     }
-
-    /** post数据交互 */
-    public void post(String url, RequestParams params,
-                     TextHttpResponseHandler responseHandler) {
-        client.post(url, params, responseHandler);
-    }
-
-    /** get数据交互 */
-    public void get(String url, RequestParams params,
-                    AsyncHttpResponseHandler responseHandler) {
-        client.get(url, params, responseHandler);
-    }
-    /** get数据交互 */
-    public void get(String url, RequestParams params,
-                    TextHttpResponseHandler responseHandler) {
-        client.get(url, params, responseHandler);
-    }
-
 
     /**
      * 注册
@@ -124,7 +103,7 @@ public class HttpUtil {
      * @param eventId 活动id
      * @param responseHandler
      */
-    public static void getEventByEventId(Context context, int eventId, JsonHttpResponseHandler responseHandler) {
+    public static void getEventByEventId(Context context, int eventId, final JsonHttpResponseHandler responseHandler) {
         RequestParams params = new RequestParams();
         SharedPreferencesUtil sp = SharedPreferencesUtil.getSharedPreferencesUtil(context);
         params.put("sessionid", sp.get("sessionid"));
@@ -132,6 +111,7 @@ public class HttpUtil {
         new AsyncHttpClient().get(context, EVENT_DETAILS, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
                 super.onSuccess(statusCode, headers, response);
             }
 
@@ -224,6 +204,55 @@ public class HttpUtil {
 
     }
 
+
+    /**
+     * 创建新活动
+     * @param context
+     * @param params
+     * @param imagePath
+     * @param responseHandler
+     */
+    public static void createNewEvent(Context context, RequestParams params, String imagePath, final JsonHttpResponseHandler responseHandler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.post(context, CREATE_EVENT, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+
+        RequestParams imageParams = new RequestParams();
+        imageParams.put("myactivityid", "6951713b-6a53-45c5-b884-22fcd2ec9a87");
+        try {
+            imageParams.put("pic", new File(imagePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        client.addHeader("enctype", "multipart/form-data");
+
+        client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.e("pic", response.toString());
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.e("pic", "failure " + responseString);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
     /** 注册 **/
     private static final String SIGN_UP = Config.URL.COMMON + "authorize/newregister.html";
 
@@ -250,6 +279,12 @@ public class HttpUtil {
     /** 创建活动 **/
     private static final String CREATE_EVENT = Config.URL.COMMON + "activities/create.html";
 
+    /** 上传活动图片 **/
+    private static final String UPLOAD_IMAGE = Config.URL.COMMON + "activities/uploadpic.html";
+
+    /** 修改活动图片 **/
+    private static final String MODIFY_IMAGE = Config.URL.COMMON + "activities/changepic.html";
+
     /** 活动参与者 **/
     private static final String JOINER = Config.URL.COMMON + "join/show.json";
 
@@ -267,6 +302,12 @@ public class HttpUtil {
 
     /** 修改补全个人信息 **/
     private static final String CHANGE_SELFINFO = Config.URL.COMMON + "authorize/changeselfinfo.html";
+
+    /** 上传用户头像 **/
+    private static final String UPLOAD_AVATAR = Config.URL.COMMON + "authorize/uploadphoto.html";
+
+    /** 修改用户头像 **/
+    private static final String MODIFY_AVATAR = Config.URL.COMMON + "authorize/changephoto.html";
 
     /** 修改活动信息 **/
     private static final String CHANGE_EVENTINFO = Config.URL.COMMON + "activities/changeinfo.json";

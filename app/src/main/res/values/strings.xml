@@ -8,11 +8,16 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_create">PostNewActivity</string>
+
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
 
     <string name="drawer_item_timeline">主页</string>
     <string name="drawer_item_jointed">已关注</string>
+    <string name="drawer_item_postnew">创建</string>
 
+
+    <string name="event_post">发布</string>
 </resources>

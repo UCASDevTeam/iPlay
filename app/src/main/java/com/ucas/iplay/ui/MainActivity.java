@@ -1,6 +1,7 @@
 package com.ucas.iplay.ui;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,7 @@ import com.ucas.iplay.ui.base.BaseActivity;
 import com.ucas.iplay.ui.fragment.JointedFragment;
 import com.ucas.iplay.ui.fragment.NavigationDrawerFragment;
 import com.ucas.iplay.ui.fragment.NavigationDrawerFragment.NavigationDrawerCallback;
+import com.ucas.iplay.ui.fragment.PostNewFragment;
 import com.ucas.iplay.ui.fragment.TimeLineFragment;
 
 
@@ -23,10 +25,12 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
 
     private static final int TIME_LINE_FRAGMENT = 0;
     private static final int JOINTED_FRAGMENT = 1;
+    private static final int POSTNEW_FRAGMENT = 2;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private TimeLineFragment mTimeLineFragment;
     private JointedFragment mJointedFragment;
+    private PostNewFragment mPostnewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,15 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
                 }
                 mTitle = getString(R.string.drawer_item_jointed);
                 fragmentTransaction.replace(R.id.content_frame, mJointedFragment);
+                break;
+            case POSTNEW_FRAGMENT:
+//                if (mPostnewFragment == null) {
+//                    mPostnewFragment = new PostNewFragment();
+//                }
+//                mTitle = getString(R.string.drawer_item_postnew);
+//                fragmentTransaction.replace(R.id.content_frame, mPostnewFragment);
+                Intent intent = new Intent(MainActivity.this, PostNewActivity.class);
+                startActivity(intent);
                 break;
         }
         setTitle(mTitle);
