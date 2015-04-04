@@ -29,8 +29,11 @@ import com.ucas.iplay.util.SharedPreferencesUtil;
 import com.ucas.iplay.util.StringUtil;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 /**
@@ -262,7 +265,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         // 打包所有请求参数
 //        SharedPreferencesUtil sp = SharedPreferencesUtil.getSharedPreferencesUtil(this);
 //        params.put("sessionid", sp.get("sessionid"));
-        params.put("sessionid", "544f33ab-5567-4930-ac18-e73307ca1422");
+        params.put("sessionid", "dda77e9c-5305-48cf-967a-0633d2e17126");
         params.put("startat", String.valueOf(startAt));
         params.put("endat", String.valueOf(endAt));
         params.put("enrollbefore", "1000020020");
@@ -275,9 +278,16 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         params.put("myactivityid", "6951713b-6a53-45c5-b884-22fcd2ec9a87");
 
 
-        HttpUtil.createNewEvent(this, params, mImagePath, new JsonHttpResponseHandler() {
+        HttpUtil.createNewEvent(this, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if (mImagePath != null) {
+                    try {
+                        uploadEventPhoto(String.valueOf(response.get("activityid")));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 Log.e(TAG, response.toString());
             }
 
@@ -288,4 +298,33 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         });
     }
 
+
+    private void uploadEventPhoto(String eventId) {
+        RequestParams params = new RequestParams();
+        params.put("activityid", eventId);
+        params.put("sessionid", "dda77e9c-5305-48cf-967a-0633d2e17126");
+        File f = new File(mImagePath);
+        if (f.exists()) {
+            try {
+                params.put("photo", f);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } else {
+            return;
+        }
+
+        HttpUtil.uploadPhoto(this, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.e(TAG, response.toString());
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
 }

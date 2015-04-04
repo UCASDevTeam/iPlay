@@ -12,6 +12,7 @@ import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -209,16 +210,39 @@ public class HttpUtil {
      * 创建新活动
      * @param context
      * @param params
-     * @param imagePath
      * @param responseHandler
      */
-    public static void createNewEvent(Context context, RequestParams params, String imagePath, final JsonHttpResponseHandler responseHandler) {
+    public static void createNewEvent(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
+
         client.post(context, CREATE_EVENT, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
+    /**
+     * 上传照片
+     * @param context
+     * @param params
+     * @param responseHandler
+     */
+    public static void uploadPhoto(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("enctype", "multipart/form-data");
+        client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
                 super.onSuccess(statusCode, headers, response);
             }
 
@@ -229,28 +253,6 @@ public class HttpUtil {
             }
         });
 
-        RequestParams imageParams = new RequestParams();
-        imageParams.put("myactivityid", "6951713b-6a53-45c5-b884-22fcd2ec9a87");
-        try {
-            imageParams.put("pic", new File(imagePath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        client.addHeader("enctype", "multipart/form-data");
-
-        client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.e("pic", response.toString());
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e("pic", "failure " + responseString);
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
     }
 
     /** 注册 **/
