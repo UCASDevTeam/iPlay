@@ -6,55 +6,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.ivanchou.ucasdemo.ui.LoginActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:orientation="vertical" >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginRight="42dp"
-            android:orientation="vertical" >
-
-            <EditText
-                android:id="@+id/et_login_account"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#00ffffff"
-                android:hint="请输入帐号"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="15dp" />
-            <EditText
-                android:id="@+id/et_login_password"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="#00ffffff"
-                android:hint="请输入密码"
-                android:inputType="textPassword"
-                android:paddingLeft="15dp" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginLeft="42dp"
-            android:layout_marginRight="42dp"
-            android:layout_marginTop="10dp"
-            android:text="登  录"
-            android:textSize="20sp"/>
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginRight="42dp" >
-
-
-
-        </RelativeLayout>
-    </LinearLayout>
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </RelativeLayout>
