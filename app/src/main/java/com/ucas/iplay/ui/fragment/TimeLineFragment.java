@@ -1,7 +1,10 @@
 package com.ucas.iplay.ui.fragment;
 
 import android.annotation.TargetApi;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Build;
@@ -12,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.app.Config;
@@ -21,6 +26,7 @@ import com.ucas.iplay.core.model.EventModel;
 import com.ucas.iplay.core.model.TagModel;
 import com.ucas.iplay.core.tasker.AllTagsParseTask;
 import com.ucas.iplay.ui.adapter.EventCursorAdapter;
+import com.ucas.iplay.ui.view.EventView;
 import com.ucas.iplay.ui.view.FooterTagsView;
 import com.ucas.iplay.ui.view.FooterTagsView.OnTagClickListener;
 import com.ucas.iplay.ui.view.QuickReturnListView;
@@ -37,10 +43,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.transform.Source;
+
 /**
  * Created by ivanchou on 1/19/2015.
  */
-public class TimeLineFragment extends BaseFragment implements OnRefreshListener, DataChangeListener, OnTagClickListener, LoaderCallbacks<Cursor> {
+public class TimeLineFragment extends BaseFragment implements OnRefreshListener, OnItemClickListener, DataChangeListener, OnTagClickListener, LoaderCallbacks<Cursor> {
     private SwipeRefreshLayout mSwipeLayout;// 下拉刷新
     private QuickReturnListView mListView;
     private List<EventModel> mEventsList;
@@ -83,6 +91,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         // 设置 listview 自动加载下一页
         mListView.setDataChangeListener(this);
         mListView.setAdapter(mEventCursorAdapter);
+        mListView.setOnItemClickListener(this);
 
         // 设置下拉刷新
         mSwipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
@@ -293,6 +302,23 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
             models.add(model);
         }
         return models;
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        EventView eventView = (EventView) view;
+        long eventId = eventView.getEventId();
+
+        Log.e(TAG, "eventid : " + eventId);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+
+        DetailsFragment detailsFragment = new DetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(DetailsFragment.EVENT_ID, (int)eventId);
+        detailsFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.content_frame, detailsFragment);
+        fragmentTransaction.commit();
     }
 
 //    /**
