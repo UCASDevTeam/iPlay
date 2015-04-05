@@ -2,25 +2,26 @@ package com.ucas.iplay.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.core.model.EventModel;
 import com.ucas.iplay.core.model.UserModel;
+import com.ucas.iplay.util.StringUtil;
 
 /**
  * Created by ivanchou on 4/5/15.
  */
 public class EventView extends RelativeLayout {
     public EventView(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public EventView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public EventView(Context context, AttributeSet attrs, int defStyle) {
@@ -28,27 +29,39 @@ public class EventView extends RelativeLayout {
         init();
     }
 
+    private View mJointed;// 采用颜色标记用户是否已经参加某活动
     private TextView mTitleTv;
-    private TextView mStartAtTv;
+    private TextView mTimeScopeTv;
+    private ImageView mAvatorIv;
+    private TextView mTagNameTv;
 
     private long mEventId;
     private UserModel mUser;
 
     private void init() {
         inflate(getContext(), R.layout.event_lv_item, this);
+        mJointed = findViewById(R.id.v_jointed);
         mTitleTv = (TextView) findViewById(R.id.tv_title);
-        mStartAtTv = (TextView) findViewById(R.id.tv_start_at);
-
+        mTimeScopeTv = (TextView) findViewById(R.id.tv_time_scope);
+        mAvatorIv = (ImageView) findViewById(R.id.iv_avatar);
+        mTagNameTv = (TextView) findViewById(R.id.tv_tag);
     }
 
     public void parse(EventModel event) {
         mEventId = event.eventId;
         mTitleTv.setText(event.title);
-        mStartAtTv.setText(event.startAt);
+        String timeScope = StringUtil.parseLongTimeToString(event.startAt) + " ~ " + StringUtil.parseLongTimeToString(event.endAt);
+        mTimeScopeTv.setText(timeScope);
+//        mAvatorIv.setImageResource(event.author.avatar);
+//        mTagNameTv.setText(event.tags);
 
     }
 
     public long getEventId() {
         return mEventId;
+    }
+
+    private void setJointed(View v) {
+        v.setBackgroundResource(android.R.color.holo_blue_bright);
     }
 }

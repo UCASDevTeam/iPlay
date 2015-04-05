@@ -8,7 +8,9 @@ import android.text.format.DateFormat;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ivanchou on 3/15/15.
@@ -63,6 +65,13 @@ public class StringUtil {
         calendar.set(year, monthOfYear, dayOfMonth);
         str = str + getDayOfWeekStr(calendar.get(Calendar.DAY_OF_WEEK)) + ", ";
         return str += year + ", " + (monthOfYear + 1) + ", " + dayOfMonth;
+    }
+
+    public static String parseLongTimeToString(String s) {
+        long time = Long.parseLong(s);
+        Date date = new Date(time);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return df.format(date);
     }
 
     private static String getDayOfWeekStr(int dayOfWeek) {

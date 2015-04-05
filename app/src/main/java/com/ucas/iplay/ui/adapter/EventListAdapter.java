@@ -50,10 +50,11 @@ public class EventListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.event_lv_item, null);
             viewHolder = new ViewHolder();
-            viewHolder.startAtTv = (TextView) convertView.findViewById(R.id.tv_start_at);
+            viewHolder.startAtTv = (TextView) convertView.findViewById(R.id.tv_time_scope);
             viewHolder.titleTv = (TextView) convertView.findViewById(R.id.tv_title);
             viewHolder.avatarIv = (ImageView) convertView.findViewById(R.id.iv_avatar);
-            viewHolder.jointedIv = (ImageView) convertView.findViewById(R.id.iv_jointed);
+//            viewHolder.jointedIv = (ImageView) convertView.findViewById(R.id.iv_jointed);
+            convertView.setTag(viewHolder);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
