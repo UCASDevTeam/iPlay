@@ -1,22 +1,15 @@
 package com.ucas.iplay.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.ucas.iplay.app.Config;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * Created by ivanchou on 1/21/2015.
@@ -40,12 +33,13 @@ public class HttpUtil {
     public static void logIn(Context context, String name, String pwd, final JsonHttpResponseHandler responseHandler) {
         RequestParams params = new RequestParams();
         params.put("username", name);
-        params.put("password", StringUtil.parseStringToMD5(pwd));
-        new AsyncHttpClient().post(context, LOG_IN, params, new TextHttpResponseHandler() {
+//        params.put("password", StringUtil.parseStringToMD5(pwd));
+        params.put("password", pwd);
+        new AsyncHttpClient().post(context, LOG_IN, params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                System.out.println(responseString);
-                responseHandler.onSuccess(statusCode, headers, responseString);
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
             }
 
             @Override
@@ -239,7 +233,7 @@ public class HttpUtil {
     public static void uploadPhoto(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("enctype", "multipart/form-data");
-        client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
+        client.post(context, MODIFY_IMAGE, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 responseHandler.onSuccess(statusCode, headers, response);

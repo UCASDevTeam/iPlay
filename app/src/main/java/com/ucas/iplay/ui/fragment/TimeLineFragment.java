@@ -129,7 +129,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, "----> " + response);
                 try {
-                    JSONArray array = response.getJSONArray("academies");
+                    JSONArray array = response.getJSONArray("tags");
                     new AllTagsParseTask(getActivity()) {
                         @Override
                         protected void onPostExecute(ArrayList<TagModel> tagModels) {

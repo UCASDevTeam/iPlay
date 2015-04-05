@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
@@ -73,6 +74,9 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
     private long endTime;
     private long startAt;
     private long endAt;
+
+    private SharedPreferencesUtil sp;
+
 
 
     private final Handler mHandler = new Handler() {
@@ -160,7 +164,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
                 timePickerDialog = RadialTimePickerDialog
                         .newInstance(PostNewActivity.this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),
                                 DateFormat.is24HourFormat(PostNewActivity.this));
-                timePickerDialog.show(fm, START_TIME_PICKER);
+                timePickerDialog.show(fm, END_TIME_PICKER);
                 break;
 
             case R.id.sw_status:
@@ -263,9 +267,8 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         startAt = startDate + startTime;
         endAt = endDate + endTime;
         // 打包所有请求参数
-//        SharedPreferencesUtil sp = SharedPreferencesUtil.getSharedPreferencesUtil(this);
-//        params.put("sessionid", sp.get("sessionid"));
-        params.put("sessionid", "dda77e9c-5305-48cf-967a-0633d2e17126");
+        sp = SharedPreferencesUtil.getSharedPreferencesUtil(this);
+        params.put("sessionid", sp.get("sessionid"));
         params.put("startat", String.valueOf(startAt));
         params.put("endat", String.valueOf(endAt));
         params.put("enrollbefore", "1000020020");
@@ -275,12 +278,13 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         params.put("tags", "1");
         params.put("maxpeople", "0");
         params.put("status", mStatus?1:0);
-        params.put("myactivityid", "6951713b-6a53-45c5-b884-22fcd2ec9a87");
+//        params.put("myactivityid", "6951713b-6a53-45c5-b884-22fcd2ec9a87");
 
 
         HttpUtil.createNewEvent(this, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.e(TAG, response.toString());
                 if (mImagePath != null) {
                     try {
                         uploadEventPhoto(String.valueOf(response.get("activityid")));
@@ -288,7 +292,6 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
                         e.printStackTrace();
                     }
                 }
-                Log.e(TAG, response.toString());
             }
 
             @Override
@@ -302,11 +305,11 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
     private void uploadEventPhoto(String eventId) {
         RequestParams params = new RequestParams();
         params.put("activityid", eventId);
-        params.put("sessionid", "dda77e9c-5305-48cf-967a-0633d2e17126");
+        params.put("sessionid", sp.get("sessionid"));
         File f = new File(mImagePath);
         if (f.exists()) {
             try {
-                params.put("photo", f);
+                params.put("picname", f);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
