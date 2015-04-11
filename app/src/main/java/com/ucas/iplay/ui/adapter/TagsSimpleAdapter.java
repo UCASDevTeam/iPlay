@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by hoolee 2015/04/10
+ * author hoolee 2015/04/10
  */
 public class TagsSimpleAdapter extends SimpleAdapter {
 
