@@ -86,6 +86,7 @@ public class HttpUtil {
                 super.onSuccess(statusCode, headers, response);
                 System.out.println("in changeInterestedTags onSuccess(), response=" + response);
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
@@ -172,8 +173,22 @@ public class HttpUtil {
      * 获取个人信息
      * @param responseHandler
      */
-    public static void getSelfInfo(Context context, JsonHttpResponseHandler responseHandler) {
+    public static void getSelfInfo(Context context, final JsonHttpResponseHandler responseHandler) {
+        RequestParams params = new RequestParams();
+        SPUtil sp = SPUtil.getSPUtil(context);
+        params.put("sessionid", sp.get("sessionid"));
+        new AsyncHttpClient().post(context, USER_SELFINFO, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
     /**
@@ -194,13 +209,25 @@ public class HttpUtil {
 
     /**
      * 获取用户发布活动纪录
-     * @param page
-     * @param pageSize
-     * @param beginId
+     * @param params
      * @param responseHandler
      */
-    public static void getEventByUserId(Context context, int page, int pageSize, int beginId, JsonHttpResponseHandler responseHandler) {
+    public static void getEventByUserId(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        SPUtil sp = SPUtil.getSPUtil(context);
+        params.put("sessionid", sp.get("sessionid"));
+        new AsyncHttpClient().post(context, USER_EVENTS, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
 
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
     /**

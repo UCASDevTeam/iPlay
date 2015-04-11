@@ -10,11 +10,11 @@ public class UserModel {
 
     public int userId;// 用户id
 
-    public String name;// 用户名
-
-    public String avatar;// 用户头像
+    public String avatar;// 用户头像 url
 
     public int schoolId;
+
+    public String schoolName;
 
     public long birthday;
 
@@ -22,17 +22,21 @@ public class UserModel {
 
     public String phone;
 
-    public String nickname;
+    public String name;
 
     public long registerTime;
 
     public int academyId;
 
+    public String academyName;
+
     public String sign;// 个人介绍
 
-    public int interestedTags;
+    public long interestedTags;
 
     public int majorId;
+
+    public String majorName;
 
     public long lastLoginTime;
 
@@ -44,7 +48,21 @@ public class UserModel {
 
     public void parse(JSONObject jsonObject) throws JSONException {
         userId = jsonObject.getInt("userid");
-        name = jsonObject.getString("username");
-        avatar = jsonObject.getString("avatar");
+        avatar = jsonObject.getString("photo");
+        birthday = jsonObject.getLong("birthday");
+        sex = jsonObject.getInt("sex");
+        phone = jsonObject.getString("phone");
+        name = jsonObject.getString("nickname");
+        registerTime = jsonObject.getLong("registertime");
+        schoolId = jsonObject.getInt("schoolid");
+        academyId = jsonObject.getInt("academyid");
+        majorId = jsonObject.getInt("majorid");
+        schoolName = jsonObject.getString("schoolname");
+        academyName = jsonObject.getString("academyname");
+        majorName = jsonObject.getString("majorname");
+        sign = jsonObject.getString("sign");
+        realname = jsonObject.getString("realname");
+        interestedTags = jsonObject.getLong("interestedtags");
+        qq = jsonObject.getInt("qq");
     }
 }

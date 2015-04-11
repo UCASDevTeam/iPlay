@@ -29,6 +29,7 @@ public class SPUtil {
     public static final String THUMBNAIL_PHOTO_URL = "thumnailphotourl";
     public static final String LAST_LOGIN_TIME = "lastlognitime";
     public static final String REGISTER_TIME = "registertime";
+    public static final String USER_EVENTS = "userevents";
 
     private static SPUtil mSpUtil;
     private SharedPreferences mSP;

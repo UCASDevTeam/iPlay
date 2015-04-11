@@ -34,13 +34,15 @@ public class EntranceActivity extends BaseActivity {
                 Log.e(TAG, "log in again");
                 logIn();
             }
+        } else {
+            logIn();
         }
 
 //        if (mSpUtil.get("user").equals("")) {
 //            mIntent = new Intent(getApplicationContext(), LoginActivity.class);
 //        } else {
-            mIntent = new Intent(getApplicationContext(), MainActivity.class);
-            mIntent.putExtra("user", mSpUtil.get("user"));
+        mIntent = new Intent(getApplicationContext(), MainActivity.class);
+        mIntent.putExtra("user", mSpUtil.get("user"));
 //        }
 
         startActivity(mIntent);
@@ -51,7 +53,7 @@ public class EntranceActivity extends BaseActivity {
     private void logIn() {
         String name = "609881037@qq.com";
         String pwd = "E10ADC3949BA59ABBE56E057F20F883E";
-        HttpUtil.logIn(this, name, pwd, new JsonHttpResponseHandler(){
+        HttpUtil.logIn(this, name, pwd, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {

@@ -14,7 +14,6 @@ import com.ucas.iplay.core.model.EventModel;
 import java.util.List;
 
 /**
- * @deprecated
  * Created by ivanchou on 1/21/2015.
  */
 public class EventListAdapter extends BaseAdapter {
@@ -54,7 +53,6 @@ public class EventListAdapter extends BaseAdapter {
             viewHolder.titleTv = (TextView) convertView.findViewById(R.id.tv_title);
             viewHolder.avatarIv = (ImageView) convertView.findViewById(R.id.iv_user_avatar);
 //            viewHolder.jointedIv = (ImageView) convertView.findViewById(R.id.iv_jointed);
-            convertView.setTag(viewHolder);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();

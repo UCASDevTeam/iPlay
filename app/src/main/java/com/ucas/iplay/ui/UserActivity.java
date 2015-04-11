@@ -10,6 +10,10 @@ import com.ucas.iplay.R;
 import com.ucas.iplay.ui.adapter.UserInfoPagerAdapter;
 import com.ucas.iplay.ui.base.BaseActivity;
 
+/**
+ * @author ivanchou
+ * Created by ivanchou on 4/11/15.
+ */
 public class UserActivity extends BaseActivity {
 
     private ViewPager mViewPager;

@@ -1,6 +1,7 @@
 package com.ucas.iplay.ui.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,14 +11,17 @@ import android.widget.TextView;
 import com.ucas.iplay.R;
 import com.ucas.iplay.core.model.EventModel;
 import com.ucas.iplay.core.model.UserModel;
+import com.ucas.iplay.ui.UserActivity;
 import com.ucas.iplay.util.StringUtil;
 
 /**
  * Created by ivanchou on 4/5/15.
  */
-public class EventView extends RelativeLayout {
+public class EventView extends RelativeLayout implements View.OnClickListener{
+    private Context mContext;
     public EventView(Context context) {
         this(context, null);
+        mContext = context;
     }
 
     public EventView(Context context, AttributeSet attrs) {
@@ -45,6 +49,7 @@ public class EventView extends RelativeLayout {
         mTimeScopeTv = (TextView) findViewById(R.id.tv_time_scope);
         mAvatorIv = (ImageView) findViewById(R.id.iv_user_avatar);
         mTagNameTv = (TextView) findViewById(R.id.tv_tag);
+        mAvatorIv.setOnClickListener(this);
     }
 
     public void parse(EventModel event) {
@@ -63,5 +68,17 @@ public class EventView extends RelativeLayout {
 
     private void setJointed(View v) {
         v.setBackgroundResource(android.R.color.holo_blue_bright);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_user_avatar:
+                Intent intent = new Intent(mContext, UserActivity.class);
+                mContext.startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 }
