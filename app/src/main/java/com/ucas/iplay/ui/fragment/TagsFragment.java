@@ -18,6 +18,7 @@ import com.ucas.iplay.ui.adapter.TagsCursorAdapter;
 import com.ucas.iplay.ui.base.BaseFragment;
 import com.ucas.iplay.ui.view.TagView;
 import com.ucas.iplay.util.HttpUtil;
+import com.ucas.iplay.util.SPUtil;
 
 /**
  * Created by ivanchou on 4/11/15.
@@ -69,6 +70,9 @@ public class TagsFragment extends BaseFragment implements OnItemClickListener, L
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        long tags = mTagsDataHelper.getInterestedTagsCode();
+        SPUtil sharedPreferencesUtil = SPUtil.getSPUtil(getActivity());
+        sharedPreferencesUtil.put(SPUtil.INTERESTED_TAGS, String.valueOf(tags));
         mTagsAdapter.changeCursor(data);
     }
 

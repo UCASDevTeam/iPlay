@@ -81,4 +81,21 @@ public class TagsDataHelper extends BaseDataHelper {
         String[] whereArgs = {String.valueOf(tagId)};
         return update(contentValues, where, whereArgs);
     }
+
+    public long getInterestedTagsCode() {
+        TagModel[] tagModels= query();
+        int position;
+        long tags = 0;
+        for (TagModel tagModel : tagModels) {
+            position = tagModel.tagId;
+            if (tagModel.interested == 1) {
+                if (((1 << position) & tags) != 0) {
+                    tags &= ~(1 << position);
+                } else { // 选中状态
+                    tags |= (1 << position);
+                }
+            }
+        }
+        return tags;
+    }
 }

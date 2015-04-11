@@ -7,7 +7,7 @@ import android.util.Log;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.ucas.iplay.ui.base.BaseActivity;
 import com.ucas.iplay.util.HttpUtil;
-import com.ucas.iplay.util.SharedPreferencesUtil;
+import com.ucas.iplay.util.SPUtil;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -20,13 +20,13 @@ import java.util.Calendar;
  * Created by ivanchou on 1/15/2015.
  */
 public class EntranceActivity extends BaseActivity {
-    private SharedPreferencesUtil mSpUtil;
+    private SPUtil mSpUtil;
     private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSpUtil = SharedPreferencesUtil.getSharedPreferencesUtil(this);
+        mSpUtil = SPUtil.getSPUtil(this);
         if (!mSpUtil.get("logintime").equals("")) {
             long lastLogin = Long.parseLong(mSpUtil.get("logintime"));
             Calendar calendar = Calendar.getInstance();

@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -16,7 +15,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.ucas.iplay.R;
 import com.ucas.iplay.ui.base.BaseActivity;
 import com.ucas.iplay.util.HttpUtil;
-import com.ucas.iplay.util.SharedPreferencesUtil;
+import com.ucas.iplay.util.SPUtil;
 import com.ucas.iplay.util.StringUtil;
 
 import org.apache.http.Header;
@@ -251,7 +250,7 @@ public class LoginActivity extends BaseActivity {
         }
 
         public void setSharedpreference( Context context) {
-            SharedPreferencesUtil spUtil = new SharedPreferencesUtil(context);
+            SPUtil spUtil = new SPUtil(context);
             spUtil.put("scohoolid", schoolid + "");
             spUtil.put("birthday", birthday);
             spUtil.put("sex", sex + "");

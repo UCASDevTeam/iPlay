@@ -6,11 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.ucas.iplay.core.db.TagsDataHelper;
 import com.ucas.iplay.core.model.TagModel;
 import com.ucas.iplay.ui.view.TagView;
 import com.ucas.iplay.ui.view.TagView.OnInterestedClickListener;
 import com.ucas.iplay.util.HttpUtil;
+import com.ucas.iplay.util.SPUtil;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 /**
  * Created by ivanchou on 4/11/15.
@@ -57,8 +62,18 @@ public class TagsCursorAdapter extends CursorAdapter implements OnInterestedClic
      */
     @Override
     public void onClick(int tagId, int interested) {
-        System.out.println("tagid: " + tagId + ", interested: " + interested);
         mTagsDataHelper.updateInterested(tagId, interested);
-//        HttpUtil.changeInterestedTags(mContext, );
+        long interestedTags = Long.valueOf(SPUtil.getSPUtil(mContext).get(SPUtil.INTERESTED_TAGS));
+        HttpUtil.changeInterestedTags(mContext, interestedTags, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 }

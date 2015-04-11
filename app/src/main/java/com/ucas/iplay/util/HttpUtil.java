@@ -6,7 +6,6 @@ import com.ucas.iplay.app.Config;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -76,7 +75,7 @@ public class HttpUtil {
      */
     public static void changeInterestedTags(Context context, long interestedtags, final JsonHttpResponseHandler responseHandler){
         RequestParams params = new RequestParams();
-        String sessionid = SharedPreferencesUtil.getSharedPreferencesUtil(context).get("sessionid");
+        String sessionid = SPUtil.getSPUtil(context).get("sessionid");
         System.out.println("in changeInterestedTags sessionid=" + sessionid);
         params.put("sessionid", sessionid);
         params.put("interestedtags", interestedtags);
@@ -125,7 +124,7 @@ public class HttpUtil {
      */
     public static void getEventByEventId(Context context, int eventId, final JsonHttpResponseHandler responseHandler) {
         RequestParams params = new RequestParams();
-        SharedPreferencesUtil sp = SharedPreferencesUtil.getSharedPreferencesUtil(context);
+        SPUtil sp = SPUtil.getSPUtil(context);
         params.put("sessionid", sp.get("sessionid"));
         params.put("activityid", eventId);
         new AsyncHttpClient().get(context, EVENT_DETAILS, params, new JsonHttpResponseHandler() {

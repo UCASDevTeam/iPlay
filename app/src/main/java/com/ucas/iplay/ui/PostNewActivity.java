@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doomonafireball.betterpickers.calendardatepicker.CalendarDatePickerDialog;
 import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog;
@@ -26,7 +25,7 @@ import com.loopj.android.http.RequestParams;
 import com.ucas.iplay.R;
 import com.ucas.iplay.app.IplayApp;
 import com.ucas.iplay.util.HttpUtil;
-import com.ucas.iplay.util.SharedPreferencesUtil;
+import com.ucas.iplay.util.SPUtil;
 import com.ucas.iplay.util.StringUtil;
 
 import org.apache.http.Header;
@@ -75,7 +74,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
     private long startAt;
     private long endAt;
 
-    private SharedPreferencesUtil sp;
+    private SPUtil sp;
 
 
 
@@ -267,7 +266,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         startAt = startDate + startTime;
         endAt = endDate + endTime;
         // 打包所有请求参数
-        sp = SharedPreferencesUtil.getSharedPreferencesUtil(this);
+        sp = SPUtil.getSPUtil(this);
         params.put("sessionid", sp.get("sessionid"));
         params.put("startat", String.valueOf(startAt));
         params.put("endat", String.valueOf(endAt));
