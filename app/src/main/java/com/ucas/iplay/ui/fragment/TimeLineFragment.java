@@ -82,6 +82,17 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         footerTagsView.setMode(FooterTagsView.TagMode.SINGLE);
 
         mTags = mTagsDataHelper.query();
+        if(mTags != null){// 由于没有解决tag重复插入的问题，这里在查询结果中过滤掉重复的tag
+            ArrayList<Integer> iList = new ArrayList<Integer>();
+            ArrayList<TagModel> tList = new ArrayList<TagModel>();
+            for(TagModel tm : mTags){
+                if(!iList.contains(tm.tagId)){
+                    iList.add(tm.tagId);
+                    tList.add(tm);
+                }
+                mTags = tList.toArray(new TagModel[0]);
+            }
+        }
         if (mTags != null || mTags.length != 0) {
             footerTagsView.setCustomTags(mTags);
             footerTagsView.setOnTagClickListener(this);

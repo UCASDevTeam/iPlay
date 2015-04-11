@@ -68,7 +68,32 @@ public class HttpUtil {
             }
         });
     }
-
+    /**
+     * 修改感兴趣（关注）标签
+     * @author hoolee
+     * @param context
+     * @param responseHandler
+     */
+    public static void changeInterestedTags(Context context, long interestedtags, final JsonHttpResponseHandler responseHandler){
+        RequestParams params = new RequestParams();
+        String sessionid = SharedPreferencesUtil.getSharedPreferencesUtil(context).get("sessionid");
+        System.out.println("in changeInterestedTags sessionid=" + sessionid);
+        params.put("sessionid", SharedPreferencesUtil.getSharedPreferencesUtil(context).get("sessionid"));
+        params.put("interestedtags", interestedtags);
+        new AsyncHttpClient().post(context, CHANGE_SELFINFO, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+                System.out.println("in changeInterestedTags onSuccess(), response=" + response);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("in changeInterestedTags onFailure(), responseString=" + responseString);
+            }
+        });
+    }
     /**
      * 获取主时间线（不带参数的）
      * @param page
