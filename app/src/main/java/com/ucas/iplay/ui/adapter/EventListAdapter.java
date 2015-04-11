@@ -52,7 +52,7 @@ public class EventListAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.startAtTv = (TextView) convertView.findViewById(R.id.tv_time_scope);
             viewHolder.titleTv = (TextView) convertView.findViewById(R.id.tv_title);
-            viewHolder.avatarIv = (ImageView) convertView.findViewById(R.id.iv_avatar);
+            viewHolder.avatarIv = (ImageView) convertView.findViewById(R.id.iv_user_avatar);
 //            viewHolder.jointedIv = (ImageView) convertView.findViewById(R.id.iv_jointed);
             convertView.setTag(viewHolder);
             convertView.setTag(viewHolder);

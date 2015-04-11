@@ -78,7 +78,7 @@ public class HttpUtil {
         RequestParams params = new RequestParams();
         String sessionid = SharedPreferencesUtil.getSharedPreferencesUtil(context).get("sessionid");
         System.out.println("in changeInterestedTags sessionid=" + sessionid);
-        params.put("sessionid", SharedPreferencesUtil.getSharedPreferencesUtil(context).get("sessionid"));
+        params.put("sessionid", sessionid);
         params.put("interestedtags", interestedtags);
         new AsyncHttpClient().post(context, CHANGE_SELFINFO, params, new JsonHttpResponseHandler() {
             @Override

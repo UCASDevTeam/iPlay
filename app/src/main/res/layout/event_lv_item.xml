@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_below="@id/tv_title"
-            android:layout_alignTop="@+id/iv_avatar"
+            android:layout_alignTop="@+id/iv_user_avatar"
             android:background="@drawable/tv_tagname_bg"
             android:padding="2dp"
             android:text="闲逛"
@@ -56,7 +56,7 @@
             android:textSize="12sp" />
 
         <ImageView
-            android:id="@+id/iv_avatar"
+            android:id="@+id/iv_user_avatar"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_below="@+id/tv_title"

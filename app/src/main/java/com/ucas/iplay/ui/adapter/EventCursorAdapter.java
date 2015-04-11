@@ -44,6 +44,7 @@ public class EventCursorAdapter extends CursorAdapter {
         EventView eventView = (EventView) view;
         EventModel eventModel = EventModel.fromCursor(context, cursor);
         eventView.parse(eventModel);
+
     }
 
     @Override

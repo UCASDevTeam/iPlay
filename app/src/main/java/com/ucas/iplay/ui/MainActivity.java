@@ -1,9 +1,9 @@
 package com.ucas.iplay.ui;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +14,7 @@ import com.ucas.iplay.ui.fragment.JointedFragment;
 import com.ucas.iplay.ui.fragment.NavigationDrawerFragment;
 import com.ucas.iplay.ui.fragment.NavigationDrawerFragment.NavigationDrawerCallback;
 import com.ucas.iplay.ui.fragment.PostNewFragment;
+import com.ucas.iplay.ui.fragment.TagsFragment;
 import com.ucas.iplay.ui.fragment.TimeLineFragment;
 
 
@@ -32,6 +33,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
     private TimeLineFragment mTimeLineFragment;
     private JointedFragment mJointedFragment;
     private PostNewFragment mPostnewFragment;
+    private TagsFragment mTagsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
 
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -50,7 +52,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
     public void onNavigationDrawerItemSelected(int position) {
         Log.e(TAG, "-------" + position + "------------");
 
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 
         switch (position) {
@@ -78,8 +80,13 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
                 startActivity(intent);
                 break;
             case CHANGETAGS_FRAGMENT:
-                Intent intentChangeTags = new Intent(MainActivity.this, ListTagsAcitvity.class);
-                startActivity(intentChangeTags);
+                if (mTagsFragment == null) {
+                    mTagsFragment = new TagsFragment();
+                }
+                mTitle = getString(R.string.drawer_item_changetags);
+                fragmentTransaction.replace(R.id.content_frame, mTagsFragment);
+//                Intent intentChangeTags = new Intent(MainActivity.this, ListTagsAcitvity.class);
+//                startActivity(intentChangeTags);
         }
         setTitle(mTitle);
         fragmentTransaction.commit();

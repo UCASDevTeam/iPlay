@@ -1,11 +1,9 @@
 package com.ucas.iplay.ui.fragment;
 
 import android.annotation.TargetApi;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.Intent;
-import android.content.Loader;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,7 +41,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Source;
 
 /**
  * Created by ivanchou on 1/19/2015.
@@ -82,17 +79,6 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         footerTagsView.setMode(FooterTagsView.TagMode.SINGLE);
 
         mTags = mTagsDataHelper.query();
-        if(mTags != null){// 由于没有解决tag重复插入的问题，这里在查询结果中过滤掉重复的tag
-            ArrayList<Integer> iList = new ArrayList<Integer>();
-            ArrayList<TagModel> tList = new ArrayList<TagModel>();
-            for(TagModel tm : mTags){
-                if(!iList.contains(tm.tagId)){
-                    iList.add(tm.tagId);
-                    tList.add(tm);
-                }
-                mTags = tList.toArray(new TagModel[0]);
-            }
-        }
         if (mTags != null || mTags.length != 0) {
             footerTagsView.setCustomTags(mTags);
             footerTagsView.setOnTagClickListener(this);

@@ -43,7 +43,7 @@ public class EventView extends RelativeLayout {
         mJointed = findViewById(R.id.v_jointed);
         mTitleTv = (TextView) findViewById(R.id.tv_title);
         mTimeScopeTv = (TextView) findViewById(R.id.tv_time_scope);
-        mAvatorIv = (ImageView) findViewById(R.id.iv_avatar);
+        mAvatorIv = (ImageView) findViewById(R.id.iv_user_avatar);
         mTagNameTv = (TextView) findViewById(R.id.tv_tag);
     }
 
