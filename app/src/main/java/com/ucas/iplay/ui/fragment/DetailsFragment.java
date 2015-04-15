@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.ucas.iplay.core.db.EventsDataHelper;
@@ -25,7 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailsFragment extends BaseFragment {
+public class DetailsFragment extends BaseFragment implements OnRefreshListener{
 
     private Activity mActivity;
     private View mDetailsView;
@@ -50,6 +52,7 @@ public class DetailsFragment extends BaseFragment {
     private TextView mSupportView;
     private Button mMapButton;
     private ImageView mPosterView;
+    private SwipeRefreshLayout mSwipRefreshLayout;
 
     private ImageView [] mImageViews;
 
@@ -72,11 +75,12 @@ public class DetailsFragment extends BaseFragment {
         mPlaceAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_place_at);
         mStartAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_start_at);
         mTitleView = (TextView) mDetailsView.findViewById(R.id.tv_details_title);
-        mMapButton = (Button) mDetailsView.findViewById(R.id.bt_details_map);
+        //mMapButton = (Button) mDetailsView.findViewById(R.id.bt_details_map);
         mPosterView = (ImageView) mDetailsView.findViewById(R.id.iv_details_poster_view);
         mEndAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_end_at);
         mContentView = (TextView) mDetailsView.findViewById(R.id.tv_details_content);
-        mSupportView = (TextView) mDetailsView.findViewById(R.id.tv_details_supporter);
+        mSwipRefreshLayout = (SwipeRefreshLayout) mDetailsView.findViewById(R.id.srl_details_refresh);
+        //mSupportView = (TextView) mDetailsView.findViewById(R.id.tv_details_supporter);
 
         /*  设置监听器   */
         setListener();
@@ -115,6 +119,12 @@ public class DetailsFragment extends BaseFragment {
         releaseFragmentStack();
     }
 
+    @Override
+    public void onRefresh() {
+        getDataFromHttp();
+        getData();
+    }
+
     /*  绘制界面    */
     private void drawView(){
         mAuthorNickView.setText(mEvent.author.name);
@@ -136,7 +146,6 @@ public class DetailsFragment extends BaseFragment {
         mTitleView.invalidate();
         mContentView.invalidate();
         mEndAtView.invalidate();
-        mSupportView.invalidate();
     }
 
     /*  设置事件    */
@@ -150,12 +159,12 @@ public class DetailsFragment extends BaseFragment {
     private void setListener()
     {
 
-        mMapButton.setOnClickListener(new View.OnClickListener() {
+        /*mMapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getData();
             }
-        });
+        });*/
 
         mPosterView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +172,12 @@ public class DetailsFragment extends BaseFragment {
                 onDetailsFragmentClick(POSTER_ON_CLICK);
             }
         });
+
+        mSwipRefreshLayout.setOnRefreshListener(this);
+        mSwipRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     /*  释放fragment队列*/
@@ -252,11 +267,11 @@ public class DetailsFragment extends BaseFragment {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         switch (viewID){
             case DetailsFragment.POSTER_ON_CLICK:
-                if (mPosterAlbumFragment == null){
+                /*if (mPosterAlbumFragment == null){
                     mPosterAlbumFragment = new PosterAlbumFragment();
                 }
                 mPosterAlbumFragment.setImageViews(mImageViews);
-                fragmentTransaction.add(R.id.content_frame,mPosterAlbumFragment).addToBackStack("DetailsFragment");
+                fragmentTransaction.add(R.id.content_frame,mPosterAlbumFragment).addToBackStack("DetailsFragment");*/
                 break;
             case DetailsFragment.MAP_ON_CLICK:
                 break;
