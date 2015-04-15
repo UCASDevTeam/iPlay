@@ -286,20 +286,6 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         mEventCursorAdapter.changeCursor(null);
     }
 
-    /**
-     * 填充假数据 card list view
-     */
-    private void initEvenListData() {
-
-        for (int i = 0; i < 10; i++) {
-            EventModel event = new EventModel();
-            event.startAt = "16:00";
-            event.title = "测试一下";
-            mEventsList.add(event);
-        }
-    }
-
-
     private ArrayList<EventModel> getModels(JSONArray response) throws JSONException {
         ArrayList<EventModel> models = new ArrayList<EventModel>();
         for(int i = 0; i < response.length(); i++){
@@ -324,38 +310,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         bundle.putInt(DetailsFragment.EVENT_ID, (int)eventId);
         detailsFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.content_frame, detailsFragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-//    /**
-//     * 填充假数据 simple list view
-//     *
-//     * @return
-//     */
-//    private List<String> getData() {
-//        list.clear();
-//        for (int i = 0; i < 14; i++) {
-//            list.add(i + "--" + mTags[i % 7]);
-//        }
-//
-//        if (tags == 0) {
-//            return list;
-//        }
-//
-//        int tmp;
-//        for (int i = 0; i < mTags.length; i++) {
-//            tmp = tags;
-//            if (((tmp >> i) & 1) == 0) {
-//                for (int j = 0, len = list.size(); j < len; j++) {
-//                    if (list.get(j).contains(mTags[i])) {
-//                        list.remove(j);
-//                        len--;
-//                        j--;
-//                    }
-//                }
-//            }
-//        }
-//        return list;
-//    }
-
 }
