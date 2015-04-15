@@ -57,6 +57,7 @@ public class EventView extends RelativeLayout implements View.OnClickListener{
         mTitleTv.setText(event.title);
         String timeScope = StringUtil.parseLongTimeToString(event.startAt) + " ~ " + StringUtil.parseLongTimeToString(event.endAt);
         mTimeScopeTv.setText(timeScope);
+        mUser = event.author;
 //        mAvatorIv.setImageResource(event.author.avatar);
 //        mTagNameTv.setText(event.tags);
 
@@ -75,6 +76,7 @@ public class EventView extends RelativeLayout implements View.OnClickListener{
         switch (v.getId()) {
             case R.id.iv_user_avatar:
                 Intent intent = new Intent(mContext, UserActivity.class);
+                intent.putExtra("user", mUser);
                 mContext.startActivity(intent);
                 break;
             default:

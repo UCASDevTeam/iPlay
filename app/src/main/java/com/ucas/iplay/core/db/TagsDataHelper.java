@@ -63,6 +63,24 @@ public class TagsDataHelper extends BaseDataHelper {
         return tags;
     }
 
+    public TagModel[] queryNeed() {
+        TagModel[] tags;
+        String selection = BaseTagsDBInfo.IS_INTERESTED + "=?";
+        String[] selectionArgs = {String.valueOf(1)};
+        Cursor cursor = query(null, selection, selectionArgs, null);
+        if (cursor.moveToFirst()) {
+            ArrayList<TagModel> tagModelArrayList = new ArrayList<TagModel>();
+            do {
+                tagModelArrayList.add(TagModel.fromCursor(mContext, cursor));
+            } while (cursor.moveToNext());
+            tags = tagModelArrayList.toArray(new TagModel[tagModelArrayList.size()]);
+        } else {
+            tags = new TagModel[0];
+        }
+        cursor.close();
+        return tags;
+    }
+
 
     public int bulkInsert(List<TagModel> tags) {
         ArrayList<ContentValues> contentValues = new ArrayList<ContentValues>();

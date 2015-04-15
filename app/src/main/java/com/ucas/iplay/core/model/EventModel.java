@@ -9,10 +9,12 @@ import com.ucas.iplay.core.dbinfo.BaseEventsDBInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchou on 1/21/2015.
  */
-public class EventModel {
+public class EventModel implements Serializable{
 
     public long eventId;// 事件 ID
 
@@ -57,7 +59,7 @@ public class EventModel {
         author = new UserModel();
         author.userId = jsonObject.getInt("authorid");
 //        author.name = jsonObject.getString("authornick");
-//        author.avatar = jsonObject.getString("authorphoto");
+        author.avatar = jsonObject.getString("authorphoto");
 
 //        author.parse(jsonObject.getJSONObject("author"));
 

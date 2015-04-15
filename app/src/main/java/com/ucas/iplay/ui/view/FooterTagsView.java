@@ -25,7 +25,7 @@ public class FooterTagsView extends ViewGroup {
     private TagModel[] mTags;
     private LayoutInflater mInflater;
 
-    private int tags;// 纪录选中的 tag
+    private long tags;// 纪录选中的 tag
     private static final int SINGLE_CLICK = 0;
     private static final int LONG_CLICK = 1;
     private OnTagClickListener mCallbacks;
@@ -232,8 +232,12 @@ public class FooterTagsView extends ViewGroup {
                         tags |= (1 << position);
                     }
                 } else {
-                    tags = 0;
-                    tags |= (1 << position);
+                    if (((1 << position) & tags) != 0) {
+                        tags = 0;
+                    } else {
+                        tags = 0;
+                        tags |= (1 << position);
+                    }
                 }
                 break;
 
@@ -276,13 +280,13 @@ public class FooterTagsView extends ViewGroup {
          * 点击 tag 触发刷新
          * @param tags
          */
-        public void onTagClickRefresh(int tags);
+        public void onTagClickRefresh(long tags);
 
         /**
          * 长按实现单选
          * @param tags
          */
-        public void onTagLongClickRefresh(int tags);
+        public void onTagLongClickRefresh(long tags);
     }
 
     public void setMode(TagMode mMode) {

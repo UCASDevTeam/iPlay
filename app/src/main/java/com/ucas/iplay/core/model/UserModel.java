@@ -3,10 +3,12 @@ package com.ucas.iplay.core.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchou on 1/27/2015.
  */
-public class UserModel {
+public class UserModel implements Serializable{
 
     public int userId;// 用户id
 

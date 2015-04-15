@@ -8,10 +8,12 @@ import com.ucas.iplay.core.dbinfo.BaseTagsDBInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by ivanchou on 1/27/2015.
  */
-public class TagModel {
+public class TagModel implements Serializable{
 
     public int tagId;
 

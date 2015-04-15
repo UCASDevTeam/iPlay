@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.loopj.android.http.RequestParams;
 import com.ucas.iplay.R;
 import com.ucas.iplay.app.Config;
 import com.ucas.iplay.core.db.EventsDataHelper;
@@ -60,6 +61,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     private boolean mLoadFromCache;
 
     private TagModel[] mTags;
+    private long mTagsVal = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +80,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         footerTagsView = (FooterTagsView) view.findViewById(R.id.ftv_footer);
         footerTagsView.setMode(FooterTagsView.TagMode.SINGLE);
 
-        mTags = mTagsDataHelper.query();
+        mTags = mTagsDataHelper.queryNeed();
         if (mTags != null || mTags.length != 0) {
             footerTagsView.setCustomTags(mTags);
             footerTagsView.setOnTagClickListener(this);
@@ -155,7 +157,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         if (mEventsDataHelper.query().length == 0) {
             // 第一次载入若数据库为空，则请求服务器
             mPage = 1;
-            getData();
+            getData(mTagsVal);
             mLoadFromCache = false;
         } else {
             // 否则加载数据库缓存
@@ -165,13 +167,19 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
 
     /**
      * 从服务器获取活动
+     * @param tags 用于获取分类
      */
-    public void getData() {
+    public void getData(long tags) {
         if (mPage == 1) {
             mLoadFromCache = false;
         }
+
+        RequestParams params = new RequestParams();
+        params.put("pagenumber", String.valueOf(mPage));
+        params.put("tags", tags);
+
         // 加载活动
-        HttpUtil.getLatestEvents(getActivity(), mPage, new JsonHttpResponseHandler() {
+        HttpUtil.getLatestEvents(getActivity(), params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, "----> " + response);
@@ -203,7 +211,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     @Override
     public void onRefresh() {
         mPage = 1;
-        getData();
+        getData(mTagsVal);
         mSwipeLayout.setRefreshing(true);
     }
 
@@ -216,7 +224,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
 
         // 从网络加载更多的数据
         if (!mLoadFromCache) {
-            getData();
+            getData(mTagsVal);
         }
 
     }
@@ -227,10 +235,10 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onTagClickRefresh(int tags) {
+    public void onTagClickRefresh(long tags) {
 
         if (Config.MODE.ISDEBUG) {
-            Log.e(TAG, "------- tags " + Integer.toBinaryString(tags));
+            Log.e(TAG, "------- tags " + Long.toBinaryString(tags));
         }
 
         /**
@@ -238,9 +246,10 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
          * 2. 请求服务器
          * 3. 服务器响应后清空本地
          */
-
+        mTagsVal = tags;
         // 服务器获取数据
-        getData();
+        getData(mTagsVal);
+        mSwipeLayout.setRefreshing(true);
         // changeCursor
     }
 
@@ -249,10 +258,10 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
      * @param tags 选中的 tag 列表
      */
     @Override
-    public void onTagLongClickRefresh(int tags) {
+    public void onTagLongClickRefresh(long tags) {
         if (Config.MODE.ISDEBUG) {
             Log.e(TAG, "----on long click refresh----");
-            Log.e(TAG, "------- tags " + Integer.toBinaryString(tags));
+            Log.e(TAG, "------- tags " + Long.toBinaryString(tags));
         }
     }
 

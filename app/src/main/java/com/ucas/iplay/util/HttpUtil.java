@@ -99,10 +99,9 @@ public class HttpUtil {
      * @param page
      * @param responseHandler
      */
-    public static void getLatestEvents(Context context, int page, final JsonHttpResponseHandler responseHandler) {
+    public static void getLatestEvents(Context context,  RequestParams params, final JsonHttpResponseHandler responseHandler) {
 
-        RequestParams params = new RequestParams();
-        params.put("pagenumber", String.valueOf(page));
+
         new AsyncHttpClient().get(context, LATEST_EVENTS, params, new JsonHttpResponseHandler() {
 
             @Override
