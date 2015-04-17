@@ -27,16 +27,19 @@ public class EntranceActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSpUtil = SPUtil.getSPUtil(this);
-        if (!mSpUtil.get("logintime").equals("")) {
-            long lastLogin = Long.parseLong(mSpUtil.get("logintime"));
-            Calendar calendar = Calendar.getInstance();
-            if (calendar.getTimeInMillis() - lastLogin > 24 * 60 * 6000) {
-                Log.e(TAG, "log in again");
-                logIn();
-            }
-        } else {
-            logIn();
-        }
+//        if (!mSpUtil.get("logintime").equals("")) {
+//            long lastLogin = Long.parseLong(mSpUtil.get("logintime"));
+//            Calendar calendar = Calendar.getInstance();
+//            if (calendar.getTimeInMillis() - lastLogin > 24 * 60 * 6000) {
+//                Log.e(TAG, "log in again");
+//                logIn();
+//            }
+//        } else {
+//            Log.e(TAG, "log in again");
+//            logIn();
+//        }
+        logIn();
+
 
 //        if (mSpUtil.get("user").equals("")) {
 //            mIntent = new Intent(getApplicationContext(), LoginActivity.class);
@@ -57,10 +60,12 @@ public class EntranceActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-                    String sessionId = (String) response.get("sessionid");
-                    mSpUtil.put("sessionid", sessionId);
+                    String sessionId = (String) response.get(SPUtil.SESSIONID);
+                    String interestedTags = String.valueOf(response.get(SPUtil.INTERESTED_TAGS));
+                    mSpUtil.put(SPUtil.SESSIONID, sessionId);
                     Calendar calendar = Calendar.getInstance();
-                    mSpUtil.put("logintime", String.valueOf(calendar.getTimeInMillis()));
+                    mSpUtil.put(SPUtil.LAST_LOGIN_TIME, String.valueOf(calendar.getTimeInMillis()));
+                    mSpUtil.put(SPUtil.INTERESTED_TAGS, interestedTags);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -95,7 +95,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         app = (IplayApp) getApplication();
         app.addActivity(this);
         setContentView(R.layout.fragment_postnew);
-
+        sp = SPUtil.getSPUtil(this);
 
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -247,7 +247,12 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_event_post:
-                postNewEvent();
+                String uid = StringUtil.randomString();
+                Log.e(TAG, uid);
+                if (mImagePath != null) {
+                    uploadEventPhoto(uid);
+                }
+//                postNewEvent();
                 break;
             case android.R.id.home:
                 this.finish();
@@ -261,12 +266,12 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
     /**
      * 发布新活动
      */
-    private void postNewEvent() {
+    private void postNewEvent(String uid) {
+
         RequestParams params = new RequestParams();
         startAt = startDate + startTime;
         endAt = endDate + endTime;
         // 打包所有请求参数
-        sp = SPUtil.getSPUtil(this);
         params.put("sessionid", sp.get("sessionid"));
         params.put("startat", String.valueOf(startAt));
         params.put("endat", String.valueOf(endAt));
@@ -277,20 +282,19 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
         params.put("tags", "1");
         params.put("maxpeople", "0");
         params.put("status", mStatus?1:0);
-//        params.put("myactivityid", "6951713b-6a53-45c5-b884-22fcd2ec9a87");
-
+        params.put("myactivityid", uid);
 
         HttpUtil.createNewEvent(this, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, response.toString());
-                if (mImagePath != null) {
-                    try {
-                        uploadEventPhoto(String.valueOf(response.get("activityid")));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                if (mImagePath != null) {
+//                    try {
+//                        uploadEventPhoto(String.valueOf(response.get("activityid")));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
             }
 
             @Override
@@ -301,7 +305,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
     }
 
 
-    private void uploadEventPhoto(String eventId) {
+    private void uploadEventPhoto(final String eventId) {
         RequestParams params = new RequestParams();
         params.put("activityid", eventId);
         params.put("sessionid", sp.get("sessionid"));
@@ -320,6 +324,7 @@ public class PostNewActivity extends FragmentActivity implements View.OnClickLis
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.e(TAG, response.toString());
+                postNewEvent(eventId);
                 super.onSuccess(statusCode, headers, response);
             }
 

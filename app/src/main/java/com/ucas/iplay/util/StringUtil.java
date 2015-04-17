@@ -11,25 +11,24 @@ import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by ivanchou on 3/15/15.
  */
 public class StringUtil {
     public static String parseStringToMD5(String str) {
+        StringBuffer sb = new StringBuffer();
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
             byte[] bytes = md5.digest(str.getBytes());
-            StringBuffer sb = new StringBuffer();
             for (int i = 0; i < bytes.length; ++i) {
                 sb.append(Integer.toHexString((bytes[i] & 0xFF) | 0x100).substring(1, 3));
             }
-            return sb.toString();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } finally {
-            return null;
         }
+        return sb.toString();
     }
 
     /**
@@ -72,6 +71,21 @@ public class StringUtil {
         Date date = new Date(time);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
+    }
+
+    /**
+     * 生成随机字符串
+     * @return
+     */
+    public static String randomString() {
+        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < 64; i++) {
+            int num = random.nextInt(62);
+            buf.append(str.charAt(num));
+        }
+        return buf.toString();
     }
 
     private static String getDayOfWeekStr(int dayOfWeek) {
