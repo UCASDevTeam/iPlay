@@ -28,4 +28,5 @@
 
     <string name="viewpager_item_info">个人信息</string>
     <string name="viewpager_item_post">发布的活动</string>
+    <string name="viewpager_item_join">参加的活动</string>
 </resources>
