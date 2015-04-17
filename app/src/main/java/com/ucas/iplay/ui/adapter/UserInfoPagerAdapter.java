@@ -7,16 +7,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.ucas.iplay.R;
 import com.ucas.iplay.ui.fragment.UserInfoFragment;
+import com.ucas.iplay.ui.fragment.UserJoinFragment;
 import com.ucas.iplay.ui.fragment.UserPostFragment;
 
 /**
  * Created by ivanchou on 4/11/15.
  */
 public class UserInfoPagerAdapter extends FragmentPagerAdapter {
-    private static final int COUNT = 2;
+    private static final int COUNT = 3;
 
     private static final int USER_INFO = 0;
     private static final int USER_POST = 1;
+    private static final int USER_JOIN = 2;
 
     private String[] mTitles;
 
@@ -25,7 +27,8 @@ public class UserInfoPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         mTitles = new String[]{
                 context.getResources().getString(R.string.viewpager_item_info),
-                context.getResources().getString(R.string.viewpager_item_post)
+                context.getResources().getString(R.string.viewpager_item_post),
+                context.getResources().getString(R.string.viewpager_item_join)
         };
     }
 
@@ -36,6 +39,8 @@ public class UserInfoPagerAdapter extends FragmentPagerAdapter {
                 return UserInfoFragment.newInstance(USER_INFO, mTitles[USER_INFO]);
             case USER_POST:
                 return UserPostFragment.newInstance(USER_POST, mTitles[USER_POST]);
+            case USER_JOIN:
+                return UserJoinFragment.newInstance(USER_JOIN, mTitles[USER_JOIN]);
             default:
                 return null;
         }
