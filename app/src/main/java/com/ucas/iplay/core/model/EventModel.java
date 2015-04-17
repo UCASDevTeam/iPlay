@@ -59,7 +59,7 @@ public class EventModel implements Serializable{
         author = new UserModel();
         author.userId = jsonObject.getInt("authorid");
 //        author.name = jsonObject.getString("authornick");
-        author.avatar = jsonObject.getString("authorphoto");
+//        author.avatar = jsonObject.getString("photo");
 
 //        author.parse(jsonObject.getJSONObject("author"));
 

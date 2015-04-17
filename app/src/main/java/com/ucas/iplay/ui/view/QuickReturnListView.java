@@ -105,6 +105,7 @@ public class QuickReturnListView extends ListView implements OnScrollListener {
         mHeight = 0;
         mItemCount = getAdapter().getCount();
 
+
         /** {https://github.com/LarsWerkman/QuickReturnListView/issues/8#issuecomment-24748156} **/
         if (mItemOffsetY == null || mItemOffsetY.length != mItemCount) {
             mItemOffsetY = new int[mItemCount];
