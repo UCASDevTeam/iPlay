@@ -28,8 +28,10 @@ import com.ucas.iplay.ui.adapter.EventCursorAdapter;
 import com.ucas.iplay.ui.view.EventView;
 import com.ucas.iplay.ui.view.FooterTagsView;
 import com.ucas.iplay.ui.view.FooterTagsView.OnTagClickListener;
-import com.ucas.iplay.ui.view.QuickReturnListView;
-import com.ucas.iplay.ui.view.QuickReturnListView.DataChangeListener;
+import com.ucas.iplay.ui.view.QRListView;
+//import com.ucas.iplay.ui.view.QuickReturnListView;
+//import com.ucas.iplay.ui.view.QuickReturnListView.DataChangeListener;
+import com.ucas.iplay.ui.view.QRListView.DataChangeListener;
 import com.ucas.iplay.ui.base.BaseFragment;
 import com.ucas.iplay.util.HttpUtil;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -48,7 +50,8 @@ import java.util.List;
  */
 public class TimeLineFragment extends BaseFragment implements OnRefreshListener, OnItemClickListener, DataChangeListener, OnTagClickListener, LoaderCallbacks<Cursor> {
     private SwipeRefreshLayout mSwipeLayout;// 下拉刷新
-    private QuickReturnListView mListView;
+//    private QuickReturnListView mListView;
+    private QRListView mListView;
     private List<EventModel> mEventsList;
 
 
@@ -76,7 +79,7 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.listview_timeline, container, false);
-        mListView = (QuickReturnListView) view.findViewById(R.id.lv_maintimeline);
+        mListView = (QRListView) view.findViewById(R.id.lv_maintimeline);
         footerTagsView = (FooterTagsView) view.findViewById(R.id.ftv_footer);
         footerTagsView.setMode(FooterTagsView.TagMode.SINGLE);
 

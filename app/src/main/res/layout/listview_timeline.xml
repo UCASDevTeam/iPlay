@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:background="@color/light_gray">
 
-            <com.ucas.iplay.ui.view.QuickReturnListView
+            <com.ucas.iplay.ui.view.QRListView
                 android:id="@+id/lv_maintimeline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
