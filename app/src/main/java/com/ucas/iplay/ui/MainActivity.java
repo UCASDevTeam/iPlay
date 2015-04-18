@@ -27,7 +27,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
     private static final int TIME_LINE_FRAGMENT = 0;
     private static final int JOINTED_FRAGMENT = 1;
     private static final int POSTNEW_FRAGMENT = 2;
-    private static final int CHANGETAGS_FRAGMENT = 3;
+//    private static final int CHANGETAGS_FRAGMENT = 3;
+    private static final int SETTING_ACTIVITY = 3;
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private TimeLineFragment mTimeLineFragment;
@@ -79,14 +80,8 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
                 Intent intent = new Intent(MainActivity.this, PostNewActivity.class);
                 startActivity(intent);
                 break;
-            case CHANGETAGS_FRAGMENT:
-                if (mTagsFragment == null) {
-                    mTagsFragment = new TagsFragment();
-                }
-                mTitle = getString(R.string.drawer_item_changetags);
-                fragmentTransaction.replace(R.id.content_frame, mTagsFragment);
-//                Intent intentChangeTags = new Intent(MainActivity.this, ListTagsAcitvity.class);
-//                startActivity(intentChangeTags);
+            case SETTING_ACTIVITY:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
         }
         setTitle(mTitle);
         fragmentTransaction.commit();

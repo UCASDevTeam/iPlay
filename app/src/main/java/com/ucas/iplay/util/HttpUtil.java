@@ -296,7 +296,7 @@ public class HttpUtil {
     public static void uploadPhoto(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("enctype", "multipart/form-data");
-        client.post(context, MODIFY_IMAGE, params, new JsonHttpResponseHandler() {
+        client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 responseHandler.onSuccess(statusCode, headers, response);

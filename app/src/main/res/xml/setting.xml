@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/preference_category_user"
+        android:key="user"
+        >
+        <Preference
+            android:title="@string/preference_login"
+            android:key="pref_login"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_category_common"
+        android:key="common"
+        >
+        <Preference
+            android:title="@string/preference_interest"
+            android:key="pref_interest"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/preference_category_more"
+        android:key="more"
+        >
+        <Preference
+            android:title="@string/preference_about"
+            android:summary="Developed by UCAS Android Team"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>
