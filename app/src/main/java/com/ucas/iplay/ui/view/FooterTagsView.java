@@ -3,6 +3,7 @@ package com.ucas.iplay.ui.view;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -270,6 +271,11 @@ public class FooterTagsView extends ViewGroup {
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        super.dispatchTouchEvent(ev);
+        return true;
+    }
 
     public void setOnTagClickListener(OnTagClickListener listener) {
         this.mCallbacks = listener;
