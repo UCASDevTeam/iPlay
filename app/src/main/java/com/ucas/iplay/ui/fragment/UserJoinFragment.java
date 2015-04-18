@@ -1,7 +1,5 @@
 package com.ucas.iplay.ui.fragment;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +26,8 @@ import java.util.List;
 
 /**
  * Created by wanggang on 2015/4/16.
+ * @author wanggang
+ * @version 2.0 by ivanchou
  */
 public class UserJoinFragment extends BaseFragment {
     private ListView mListView;
