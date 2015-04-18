@@ -16,7 +16,7 @@
     <string name="drawer_item_timeline">主页</string>
     <string name="drawer_item_jointed">已关注</string>
     <string name="drawer_item_postnew">创建</string>
-    <string name="drawer_item_changetags">选择TAG</string>
+    <string name="drawer_item_changetags">订阅关注</string>
     <string name="drawer_item_setting">设置</string>
 
     <string name="event_post">发布</string>

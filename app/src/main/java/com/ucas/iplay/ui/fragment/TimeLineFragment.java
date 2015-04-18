@@ -316,4 +316,10 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setTitle(getString(R.string.drawer_item_timeline));
+    }
 }

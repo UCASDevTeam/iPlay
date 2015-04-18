@@ -29,7 +29,6 @@ import com.ucas.iplay.util.SPUtil;
 import com.ucas.iplay.util.StringUtil;
 
 import org.apache.http.Header;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -38,6 +37,7 @@ import java.util.Calendar;
 
 /**
  * Created by ivanchou on 3/22/15.
+ * @deprecated
  */
 public class PostNewActivity extends FragmentActivity implements View.OnClickListener, CalendarDatePickerDialog.OnDateSetListener, RadialTimePickerDialog.OnTimeSetListener {
     protected final String TAG = this.getClass().getSimpleName();

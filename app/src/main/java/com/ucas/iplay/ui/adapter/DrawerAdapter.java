@@ -23,7 +23,7 @@ public class DrawerAdapter extends BaseAdapter{
                 context.getResources().getString(R.string.drawer_item_timeline),
                 context.getResources().getString(R.string.drawer_item_jointed),
                 context.getResources().getString(R.string.drawer_item_postnew),
-                context.getResources().getString(R.string.drawer_item_changetags),
+                context.getResources().getString(R.string.drawer_item_setting),
         };
     }
 

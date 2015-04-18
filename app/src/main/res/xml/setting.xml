@@ -28,6 +28,7 @@
         >
         <Preference
             android:title="@string/preference_about"
+            android:key="pref_about"
             android:summary="Developed by UCAS Android Team"
             />
     </PreferenceCategory>
