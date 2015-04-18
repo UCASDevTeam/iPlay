@@ -202,8 +202,21 @@ public class HttpUtil {
      * @param eventId
      * @param responseHandler
      */
-    public static void getJointedUserOfEvent(Context context, int eventId, JsonHttpResponseHandler responseHandler) {
-
+    public static void getJointedEventOfUser(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        SPUtil sp = SPUtil.getSPUtil(context);
+        params.put("sessionid", sp.get("sessionid"));
+        new AsyncHttpClient().post(context,USER_JOIN_EVENTS, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 
     /**
