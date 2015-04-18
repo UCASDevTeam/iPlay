@@ -2,6 +2,7 @@ package com.ucas.iplay.util;
 
 import android.content.Context;
 
+import com.loopj.android.http.SyncHttpClient;
 import com.ucas.iplay.app.Config;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -270,7 +271,7 @@ public class HttpUtil {
      * @param responseHandler
      */
     public static void createNewEvent(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
-        AsyncHttpClient client = new AsyncHttpClient();
+        SyncHttpClient client = new SyncHttpClient();
 
         client.post(context, CREATE_EVENT, params, new JsonHttpResponseHandler() {
             @Override
@@ -294,7 +295,7 @@ public class HttpUtil {
      * @param responseHandler
      */
     public static void uploadPhoto(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
-        AsyncHttpClient client = new AsyncHttpClient();
+        SyncHttpClient client = new SyncHttpClient();
         client.addHeader("enctype", "multipart/form-data");
         client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
             @Override
@@ -308,7 +309,14 @@ public class HttpUtil {
                 responseHandler.onFailure(statusCode, headers, responseString, throwable);
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
+
+            @Override
+            public void onProgress(int bytesWritten, int totalSize) {
+                responseHandler.onProgress(bytesWritten, totalSize);
+                super.onProgress(bytesWritten, totalSize);
+            }
         });
+
 
     }
 
