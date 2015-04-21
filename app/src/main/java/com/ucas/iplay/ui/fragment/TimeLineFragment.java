@@ -29,8 +29,6 @@ import com.ucas.iplay.ui.view.EventView;
 import com.ucas.iplay.ui.view.FooterTagsView;
 import com.ucas.iplay.ui.view.FooterTagsView.OnTagClickListener;
 import com.ucas.iplay.ui.view.QRListView;
-//import com.ucas.iplay.ui.view.QuickReturnListView;
-//import com.ucas.iplay.ui.view.QuickReturnListView.DataChangeListener;
 import com.ucas.iplay.ui.view.QRListView.DataChangeListener;
 import com.ucas.iplay.ui.base.BaseFragment;
 import com.ucas.iplay.util.HttpUtil;
@@ -50,7 +48,6 @@ import java.util.List;
  */
 public class TimeLineFragment extends BaseFragment implements OnRefreshListener, OnItemClickListener, DataChangeListener, OnTagClickListener, LoaderCallbacks<Cursor> {
     private SwipeRefreshLayout mSwipeLayout;// 下拉刷新
-//    private QuickReturnListView mListView;
     private QRListView mListView;
     private List<EventModel> mEventsList;
 
@@ -65,6 +62,14 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
 
     private TagModel[] mTags;
     private long mTagsVal = 0;
+
+    public static TimeLineFragment newInstance() {
+        TimeLineFragment fragment = new TimeLineFragment();
+        Bundle bundle = new Bundle();
+
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

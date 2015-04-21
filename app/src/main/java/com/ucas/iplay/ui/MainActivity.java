@@ -54,7 +54,6 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Log.e(TAG, "-------" + position + "------------");
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -65,7 +64,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
                     mTimeLineFragment = new TimeLineFragment();
                 }
                 mTitle = getString(R.string.drawer_item_timeline);
-                fragmentTransaction.replace(R.id.content_frame, mTimeLineFragment);
+                fragmentTransaction.replace(R.id.content_frame, mTimeLineFragment, TimeLineFragment.class.getName());
                 break;
             case JOINTED_FRAGMENT:
                 if (mJointedFragment == null) {
@@ -88,6 +87,7 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
                 mTitle = getString(R.string.drawer_item_setting);
                 fragmentTransaction.replace(R.id.content_frame, mSettingFragment);
                 fragmentTransaction.addToBackStack(null);
+                break;
         }
         setTitle(mTitle);
         fragmentTransaction.commit();
