@@ -26,6 +26,8 @@ import com.doomonafireball.betterpickers.radialtimepicker.RadialTimePickerDialog
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.ucas.iplay.R;
+import com.ucas.iplay.core.model.EventModel;
+import com.ucas.iplay.core.service.PostEventService;
 import com.ucas.iplay.ui.base.BaseFragment;
 import com.ucas.iplay.util.HttpUtil;
 import com.ucas.iplay.util.SPUtil;
@@ -91,6 +93,7 @@ public class PostNewFragment extends BaseFragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        mImagePath = "";
         sp = SPUtil.getSPUtil(context);
     }
 
@@ -233,12 +236,7 @@ public class PostNewFragment extends BaseFragment implements View.OnClickListene
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_event_post:
-                String uid = StringUtil.randomString();
-                Log.e(TAG, uid);
-                if (mImagePath != null) {
-                    uploadEventPhoto(uid);
-                }
-//                postNewEvent();
+                postNewEvent();
                 break;
             default:
                 break;
@@ -253,75 +251,28 @@ public class PostNewFragment extends BaseFragment implements View.OnClickListene
         inflater.inflate(R.menu.menu_post, menu);
     }
 
-    /**
-     * 发布新活动
-     */
-    private void postNewEvent(String uid) {
 
-        RequestParams params = new RequestParams();
+    private void postNewEvent() {
+        String uid = StringUtil.randomString();
         startAt = startDate + startTime;
         endAt = endDate + endTime;
-        // 打包所有请求参数
-        params.put("sessionid", sp.get("sessionid"));
-        params.put("startat", String.valueOf(startAt));
-        params.put("endat", String.valueOf(endAt));
-        params.put("enrollbefore", "1000020020");
-        params.put("placeat", "Beijing, China");
-        params.put("title", mTitleEt.getText());
-        params.put("text", mContentEt.getText());
-        params.put("tags", "1");
-        params.put("maxpeople", "0");
-        params.put("status", mStatus?1:0);
-        params.put("myactivityid", uid);
+        Intent intent = new Intent(context, PostEventService.class);
+        EventModel event = new EventModel();
+        event.startAt = String.valueOf(startAt);
+        event.endAt = String.valueOf(endAt);
+        event.endrollBefore = "100000000";
+        event.placeAt = "国科大";
+        event.title = String.valueOf(mTitleEt.getText());
+        event.content = String.valueOf(mContentEt.getText());
+        event.tags = 1;
+        event.maxPeople = 0;
+        event.restriction = mStatus ? 1 : 0;
+        event.originalPic = mImagePath;
 
-        HttpUtil.createNewEvent(context, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.e(TAG, response.toString());
-//                if (mImagePath != null) {
-//                    try {
-//                        uploadEventPhoto(String.valueOf(response.get("activityid")));
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-            }
+        intent.putExtra("event", event);
+        intent.putExtra("myactivityid", uid);
+        intent.putExtra("sessionid", sp.get("sessionid"));
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.e(TAG, responseString);
-            }
-        });
-    }
-
-
-    private void uploadEventPhoto(final String eventId) {
-        RequestParams params = new RequestParams();
-        params.put("activityid", eventId);
-        params.put("sessionid", sp.get("sessionid"));
-        File f = new File(mImagePath);
-        if (f.exists()) {
-            try {
-                params.put("picname", f);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        } else {
-            return;
-        }
-
-        HttpUtil.uploadPhoto(context, params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Log.e(TAG, response.toString());
-                postNewEvent(eventId);
-                super.onSuccess(statusCode, headers, response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
+        context.startService(intent);
     }
 }

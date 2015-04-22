@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * Created by ivanchou on 3/15/15.
@@ -78,14 +79,7 @@ public class StringUtil {
      * @return
      */
     public static String randomString() {
-        String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random random = new Random();
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < 64; i++) {
-            int num = random.nextInt(62);
-            buf.append(str.charAt(num));
-        }
-        return buf.toString();
+        return UUID.randomUUID().toString();
     }
 
     private static String getDayOfWeekStr(int dayOfWeek) {

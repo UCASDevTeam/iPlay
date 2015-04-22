@@ -47,6 +47,10 @@
             android:label="@string/title_activity_user" >
 
         </activity>
+
+        <service
+            android:name=".core.service.PostEventService">
+        </service>
     </application>
 
 </manifest>
