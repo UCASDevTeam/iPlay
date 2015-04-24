@@ -1,16 +1,21 @@
 package com.ucas.iplay.ui.fragment;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
+import android.widget.ToggleButton;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.ucas.iplay.core.db.EventsDataHelper;
@@ -53,7 +58,10 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
     private Button mMapButton;
     private ImageView mPosterView;
     private SwipeRefreshLayout mSwipRefreshLayout;
+    private ToggleButton mLikeToggleButton;
+    private Button mBackButton;
 
+    private ActionBar mActionBar;
     private ImageView [] mImageViews;
 
     @Override
@@ -62,6 +70,9 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         /*  获取时间ID和用户ID */
         mEventID = getArguments().getInt(EVENT_ID,0);
         mEventsDataHelper = new EventsDataHelper(context);
+
+        mActionBar = this.getActivity().getActionBar();
+        //mActionBar.hide();
     }
 
     @Override
@@ -71,7 +82,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         View view = inflater.inflate(R.layout.fragment_details,container,false);
         mDetailsView = view;
 
-        mAuthorNickView = (TextView) mDetailsView.findViewById(R.id.tv_details_author_nick);
+            mAuthorNickView = (TextView) mDetailsView.findViewById(R.id.tv_details_author_nick);
         mPlaceAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_place_at);
         mStartAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_start_at);
         mTitleView = (TextView) mDetailsView.findViewById(R.id.tv_details_title);
@@ -80,6 +91,8 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         mEndAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_end_at);
         mContentView = (TextView) mDetailsView.findViewById(R.id.tv_details_content);
         mSwipRefreshLayout = (SwipeRefreshLayout) mDetailsView.findViewById(R.id.srl_details_refresh);
+        mLikeToggleButton = (ToggleButton) mDetailsView.findViewById(R.id.tb_details_like);
+        //mBackButton = (Button)mDetailsView.findViewById(R.id.bt_details_return);
         //mSupportView = (TextView) mDetailsView.findViewById(R.id.tv_details_supporter);
 
         /*  设置监听器   */
@@ -98,7 +111,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         /*try {
             mCallback = (DetailsCallback)activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException("The Activity must implement DetailsCallback!");
+            throw new ClassCastException("The Activity must implement DetailsCallback!");4
         }*/
     }
 
@@ -178,7 +191,35 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
+        mLikeToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    Log.v("Like", "selected ");
+                    likeSelected();
+                }else{
+                    unLikeSelected();
+                }
+            }
+        });
+
+        /*mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActionBar.show();
+                releaseFragmentStack();
+            }
+        });*/
     }
+
+    /*  喜欢  */
+    private void likeSelected(){
+
+    }
+
+    /*  不喜欢 */
+    private void unLikeSelected(){}
 
     /*  释放fragment队列*/
     private void releaseFragmentStack(){

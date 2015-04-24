@@ -34,6 +34,10 @@
             android:name=".ui.PostNewActivity"
             android:label="@string/title_activity_create" >
         </activity>
+        <activity
+            android:name=".ui.DetailsActivity"
+            android:label="Details">
+            </activity>
 
         <provider
             android:name=".core.DataProvider"
