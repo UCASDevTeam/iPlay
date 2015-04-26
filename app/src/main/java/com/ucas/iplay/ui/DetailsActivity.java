@@ -23,7 +23,7 @@ public class DetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        eventID = getIntExtra(DetailsFragment.EVENT_ID);
+        eventID = getIntent().getIntExtra(DetailsFragment.EVENT_ID,0);
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowCustomEnabled(true);
@@ -55,7 +55,6 @@ public class DetailsActivity extends BaseActivity {
         bundle.putInt(DetailsFragment.EVENT_ID, eventID);
         detailsFragment.setArguments(bundle);
         fragmentTransaction.replace(R.id.content_details, detailsFragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
     @Override

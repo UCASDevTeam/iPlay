@@ -24,6 +24,7 @@ import com.ucas.iplay.core.model.EventModel;
 import com.ucas.iplay.R;
 import com.ucas.iplay.util.HttpUtil;
 import com.ucas.iplay.core.model.UserModel;
+import com.ucas.iplay.util.StringUtil;
 
 import org.apache.http.Header;
 import org.json.JSONException;
@@ -47,6 +48,8 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
     private EventModel mEvent;
     private int mEventID;
     private int mUserID;
+    private String startAt;
+    private String endAt;
 
     private TextView mAuthorNickView;
     private TextView mPlaceAtView;
@@ -141,11 +144,13 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
     /*  绘制界面    */
     private void drawView(){
         mAuthorNickView.setText(mEvent.author.name);
+        startAt = StringUtil.parseLongTimeToString(mEvent.startAt);
+        endAt = StringUtil.parseLongTimeToString(mEvent.endAt);
         mPlaceAtView.setText(mEvent.placeAt);
-        mStartAtView.setText(mEvent.startAt);
+        mStartAtView.setText(startAt);
         mTitleView.setText(mEvent.title);
         mContentView.setText(mEvent.content);
-        mEndAtView.setText(mEvent.endAt);
+        mEndAtView.setText(endAt);
         //mSupportView.setText(mEvent.supporter);
     }
 
