@@ -42,6 +42,12 @@ public class EventModel implements Serializable{
 
     public int restriction;// 访问权限
 
+    public String cost;//消耗
+
+    public String phone;//电话
+
+    public String email;//电子邮件
+
     public String thumbnailPic;
 
     public String originalPic;
@@ -58,19 +64,42 @@ public class EventModel implements Serializable{
         /** 注释掉的功能上相同 根据返回的 json 格式选择 **/
         author = new UserModel();
         author.userId = jsonObject.getInt("authorid");
-//        author.name = jsonObject.getString("authornick");
+        if (jsonObject.has("authornick"))
+            author.name = jsonObject.getString("authornick");
+        else
+            author.name = "";
 //        author.avatar = jsonObject.getString("photo");
 
 //        author.parse(jsonObject.getJSONObject("author"));
-
-        startAt = jsonObject.getString("startat");
-        endAt = jsonObject.getString("endat");
-//        endrollBefore = jsonObject.getString("endrollbefore");
-        placeAt = jsonObject.getString("placeat");
-        title = jsonObject.getString("title");
-        content = jsonObject.getString("text");
-        tags = jsonObject.getLong("tags");
-        maxPeople = jsonObject.getLong("maxpeople");
+        if (jsonObject.has("startat"))
+            startAt = jsonObject.getString("startat");
+        else
+            startAt = "";
+        if (jsonObject.has("endat"))
+            endAt = jsonObject.getString("endat");
+        else
+            endAt = "";
+//        endrollBefore =
+        if (jsonObject.has("placeat"))
+            placeAt = jsonObject.getString("placeat");
+        else
+            placeAt = "";
+        if (jsonObject.has("title"))
+            title = jsonObject.getString("title");
+        else
+            title = "";
+        if (jsonObject.has("text"))
+            content = jsonObject.getString("text");
+        else
+            content = "";
+        if (jsonObject.has("tags"))
+            tags = jsonObject.getLong("tags");
+        else
+            tags = -1;
+        if (jsonObject.has("maxpeople"))
+            maxPeople = jsonObject.getLong("maxpeople");
+        else
+            maxPeople = -1;
 //        restriction = jsonObject.getInt("restriction");
 //        thumbnailPic = jsonObject.getString("thumbnailpic");
 //        originalPic = jsonObject.getString("originalpic");

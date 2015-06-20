@@ -38,9 +38,11 @@
     <string name="preference_interest">选择关注</string>
     <string name="preference_about">关于</string>
 
-    <string name="task_sending">发送中</string>
-    <string name="task_sending_pic">发送照片</string>
-    <string name="task_send_cancel">取消</string>
-    <string name="task_success">发送成功</string>
-    <string name="task_waiting">等待中</string>
+    <string name="details_tag_activity">详情</string>
+    <string name="details_tag_location">地点:</string>
+    <string name="details_tag_starttime">地点:</string>
+    <string name="details_tag_author">组织者信息</string>
+    <string name="details_tag_author_nick">社团</string>
+    <string name="details_tag_email">邮箱</string>
+    <string name="details_tag_phone">手机</string>
 </resources>

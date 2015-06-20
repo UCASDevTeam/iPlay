@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/rl_details_item_icon">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/iv_details_item_icon"/>
+        </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/tv_details_item_dt"
+        android:layout_toRightOf="@+id/rl_details_item_icon"
+        android:layout_toEndOf="@+id/rl_details_item_icon"
+        android:textColor="@color/black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="一只小老虎啊"
+        android:gravity="center_vertical" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:id="@+id/tv_details_item_lt"
+        android:layout_toRightOf="@+id/rl_details_item_icon"
+        android:layout_toEndOf="@+id/rl_details_item_icon"
+        android:layout_below="@+id/tv_details_item_dt"
+        android:textColor="@color/dark_gray"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="两只小老虎啊"
+        android:gravity="center_vertical" />
+</RelativeLayout>

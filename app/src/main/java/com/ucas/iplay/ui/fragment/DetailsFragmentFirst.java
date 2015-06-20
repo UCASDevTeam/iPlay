@@ -40,7 +40,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailsFragment extends BaseFragment implements OnRefreshListener{
+public class DetailsFragmentFirst extends BaseFragment implements OnRefreshListener{
 
     private Activity mActivity;
     private View mDetailsView;
@@ -59,23 +59,23 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
     private String endAt;
 
     private TextView mAuthorNickView;
+    private TextView mPlaceAtView;
+    private TextView mStartAtView;
     private TextView mTitleView;
     private TextView mContentView;
+    private TextView mEndAtView;
     private TextView mSupportView;
     private Button mMapButton;
     private ImageView mPosterView;
     private SwipeRefreshLayout mSwipRefreshLayout;
     private ToggleButton mLikeToggleButton;
     private Button mBackButton;
+    private TextView mCostView;
     private ActionBar mActionBar;
     private ImageView [] mImageViews;
     private LinearLayout mListView;
 
-    RelativeLayout mPlaceLayout;
-    RelativeLayout mDateLayout;
     RelativeLayout mCostLayout;
-    RelativeLayout mPhoneLayout;
-    RelativeLayout mEmailLayout;
     LinearLayout.LayoutParams mListParam;
 
     private int displayWidth;
@@ -102,32 +102,32 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         displayHeight = size.y;
 
         mListParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
-        mPlaceLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
-        mDateLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
         mCostLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
-        mPhoneLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
-        mEmailLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
 
         /*  获取界面组件  */
         View view = inflater.inflate(R.layout.fragment_details,container,false);
         mDetailsView = view;
 
         mListView = (LinearLayout) mDetailsView.findViewById(R.id.rl_details_list);
-
         mAuthorNickView = (TextView) mDetailsView.findViewById(R.id.tv_details_author_nick);
+        mPlaceAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_place_at);
+        mStartAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_start_at);
         mTitleView = (TextView) mDetailsView.findViewById(R.id.tv_details_title);
+        //mMapButton = (Button) mDetailsView.findViewById(R.id.bt_details_map);
+        mPosterView = (ImageView) mDetailsView.findViewById(R.id.iv_details_poster_view);
+        mEndAtView = (TextView) mDetailsView.findViewById(R.id.tv_details_end_at);
         mContentView = (TextView) mDetailsView.findViewById(R.id.tv_details_content);
-
         mSwipRefreshLayout = (SwipeRefreshLayout) mDetailsView.findViewById(R.id.srl_details_refresh);
+        mLikeToggleButton = (ToggleButton) mDetailsView.findViewById(R.id.tb_details_like);
         //mBackButton = (Button)mDetailsView.findViewById(R.id.bt_details_return);
         //mSupportView = (TextView) mDetailsView.findViewById(R.id.tv_details_supporter);
 
+        /*  设置监听器   */
+        setListener();
 
         /*  初始化界面组件 */
         initData();
         drawView();
-        /*  设置监听器   */
-        setListener();
         return view;
     }
 
@@ -167,105 +167,32 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
 
     /*  绘制界面    */
     private void drawView(){
-        mListView.removeAllViews();
         mAuthorNickView.setText(mEvent.author.name);
+        startAt = StringUtil.parseLongTimeToString(mEvent.startAt);
+        endAt = StringUtil.parseLongTimeToString(mEvent.endAt);
+        mPlaceAtView.setText(mEvent.placeAt);
+        mStartAtView.setText(startAt);
         mTitleView.setText(mEvent.title);
         mContentView.setText(mEvent.content);
-
-        startAt = StringUtil.parseLongTimeToString(mEvent.startAt);
-
-        TextView dt, lt;
-        ImageView iv;
-        if (mEvent.placeAt!=null && mEvent.placeAt.length()>0) {
-            mListView.addView(mPlaceLayout, mListParam);
-            iv = (ImageView)mPlaceLayout.findViewById(R.id.iv_details_item_icon);
-            iv.setImageResource(R.drawable.ic_location);
-            dt = (TextView)mPlaceLayout.findViewById(R.id.tv_details_item_dt);
-            lt = (TextView)mPlaceLayout.findViewById(R.id.tv_details_item_lt);
-            int blank = mEvent.placeAt.indexOf(" ");
-            if (blank > 0) {
-                dt.setText(mEvent.placeAt.substring(0, blank));
-                lt.setText(mEvent.placeAt.substring(blank,mEvent.placeAt.length()));
-            }
-            else {
-                dt.setText(mEvent.placeAt);
-                lt.setText("中国");
-            }
-        }
-        if (startAt!=null && startAt.length()>0) {
-            mListView.addView(mDateLayout, mListParam);
-            iv = (ImageView)mDateLayout.findViewById(R.id.iv_details_item_icon);
-            iv.setImageResource(R.drawable.ic_time);
-            dt = (TextView)mDateLayout.findViewById(R.id.tv_details_item_dt);
-            lt = (TextView)mDateLayout.findViewById(R.id.tv_details_item_lt);
-            int blank = startAt.indexOf(" ");
-            if (blank > 0) {
-                lt.setText(startAt.substring(0, blank));
-                dt.setText(startAt.substring(blank,startAt.length()));
-            }
-            else {
-                dt.setText(startAt);
-                lt.setText("2015-05-20");
-            }
-        }
-        if (mEvent.cost != null && mEvent.cost.length()>0) {
-            mListView.addView(mCostLayout, mListParam);
-            iv = (ImageView)mCostLayout.findViewById(R.id.iv_details_item_icon);
-            iv.setImageResource(R.drawable.ic_cost);
-            dt = (TextView)mCostLayout.findViewById(R.id.tv_details_item_dt);
-            lt = (TextView)mCostLayout.findViewById(R.id.tv_details_item_lt);
-            int blank = mEvent.cost.indexOf(" ");
-            if (blank > 0) {
-                lt.setText(mEvent.cost.substring(0, blank));
-                dt.setText(mEvent.cost.substring(blank,mEvent.cost.length()));
-            }
-            else {
-                dt.setText(mEvent.cost);
-                lt.setText("2015-05-20");
-            }
-        }
-        if (mEvent.phone!=null && mEvent.phone.length()>0) {
-            mListView.addView(mPhoneLayout, mListParam);
-            iv = (ImageView)mPhoneLayout.findViewById(R.id.iv_details_item_icon);
-            iv.setImageResource(R.drawable.ic_phone);
-            dt = (TextView)mPhoneLayout.findViewById(R.id.tv_details_item_dt);
-            lt = (TextView)mPhoneLayout.findViewById(R.id.tv_details_item_lt);
-            int blank = mEvent.phone.indexOf(" ");
-            if (blank > 0) {
-                lt.setText(mEvent.phone.substring(0, blank));
-                dt.setText(mEvent.phone.substring(blank,mEvent.phone.length()));
-            }
-            else {
-                dt.setText(mEvent.phone);
-                lt.setText("2015-05-20");
-            }
-        }
-        if (mEvent.email!=null && mEvent.email.length()>0) {
-            mListView.addView(mEmailLayout, mListParam);
-            iv = (ImageView)mEmailLayout.findViewById(R.id.iv_details_item_icon);
-            iv.setImageResource(R.drawable.ic_email);
-            dt = (TextView)mEmailLayout.findViewById(R.id.tv_details_item_dt);
-            lt = (TextView)mEmailLayout.findViewById(R.id.tv_details_item_lt);
-            int blank = mEvent.email.indexOf(" ");
-            if (blank > 0) {
-                lt.setText(mEvent.email.substring(0, blank));
-                dt.setText(mEvent.email.substring(blank,mEvent.email.length()));
-            }
-            else {
-                dt.setText(mEvent.email);
-                lt.setText("2015-05-20");
-            }
-        }
+        mEndAtView.setText(endAt);
         //mSupportView.setText(mEvent.supporter);
-        //displayPictures();
+        displayPictures();
     }
 
     /*  获取数据后刷新界面   */
     public void getData(){
         drawView();
 
+        mListView.addView(mCostLayout,mListParam);
+        mCostView = (TextView)mCostLayout.findViewById(R.id.tv_details_item_dt);
+        mCostView.setText(String.valueOf(displayWidth) + ":" + String.valueOf(displayHeight));
+
         mAuthorNickView.invalidate();
-        mListView.invalidate();
+        mPlaceAtView.invalidate();
+        mStartAtView.invalidate();
+        mTitleView.invalidate();
+        mContentView.invalidate();
+        mEndAtView.invalidate();
     }
 
     /*  设置事件    */
@@ -286,12 +213,12 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
             }
         });*/
 
-        /*mPosterView.setOnClickListener(new View.OnClickListener() {
+        mPosterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onDetailsFragmentClick(POSTER_ON_CLICK);
             }
-        });*/
+        });
 
         mSwipRefreshLayout.setOnRefreshListener(this);
         mSwipRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -299,7 +226,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        /*mLikeToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mLikeToggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
@@ -309,7 +236,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
                     unLikeSelected();
                 }
             }
-        });*/
+        });
 
         /*mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -367,7 +294,6 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
                 List<EventModel> modles = new ArrayList<EventModel>();
                 modles.add(mEvent);
                 mEventsDataHelper.bulkInsert(modles);
-                mSwipRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -413,8 +339,8 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         mEvent.author = new UserModel();
         mEvent.author.name = "";
         mEvent.author.userId = 0;
-        mEvent.startAt = "";
-        mEvent.endAt = "";
+        mEvent.startAt = "--/-/- --:--";
+        mEvent.endAt = "--/-/- --:--";
         mEvent.placeAt = "";
         mEvent.title = "";
         mEvent.content = "";

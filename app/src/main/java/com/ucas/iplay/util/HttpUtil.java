@@ -2,13 +2,13 @@ package com.ucas.iplay.util;
 
 import android.content.Context;
 
-import com.loopj.android.http.SyncHttpClient;
 import com.ucas.iplay.app.Config;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -65,6 +65,36 @@ public class HttpUtil {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
+    /**
+     * 修改某个用户对于某个事件的感兴趣否
+     * @author Neo
+     * @param eventid
+     * @param sessionid
+     */
+    public static void setInterestAtEvent (Context context, int eventID, final JsonHttpResponseHandler responseHandler) {
+        RequestParams params = new RequestParams();
+        String sessionid = SPUtil.getSPUtil(context).get("sessionid");
+        System.out.println("in setInterestAtEvent" + sessionid);
+        params.put("sessionid",sessionid);
+        params.put("activityid",eventID);
+        params.put("rtype",1);
+        new AsyncHttpClient().post(context,USER_EVENT_STATE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+                System.out.println("in setInterestAtEvent onSuccess(), response=" + response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+                System.out.println("in setInterestAtEvent onFailure(), responseString=" + responseString);
             }
         });
     }
@@ -271,7 +301,7 @@ public class HttpUtil {
      * @param responseHandler
      */
     public static void createNewEvent(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
-        SyncHttpClient client = new SyncHttpClient();
+        AsyncHttpClient client = new AsyncHttpClient();
 
         client.post(context, CREATE_EVENT, params, new JsonHttpResponseHandler() {
             @Override
@@ -295,7 +325,7 @@ public class HttpUtil {
      * @param responseHandler
      */
     public static void uploadPhoto(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
-        SyncHttpClient client = new SyncHttpClient();
+        AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("enctype", "multipart/form-data");
         client.post(context, UPLOAD_IMAGE, params, new JsonHttpResponseHandler() {
             @Override
@@ -309,14 +339,7 @@ public class HttpUtil {
                 responseHandler.onFailure(statusCode, headers, responseString, throwable);
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
-
-            @Override
-            public void onProgress(int bytesWritten, int totalSize) {
-                responseHandler.onProgress(bytesWritten, totalSize);
-                super.onProgress(bytesWritten, totalSize);
-            }
         });
-
 
     }
 
@@ -381,4 +404,5 @@ public class HttpUtil {
 
     /** 删除活动 **/
     private static final String DEL_EVENT = Config.URL.COMMON + "activities/delete.html";
+
 }

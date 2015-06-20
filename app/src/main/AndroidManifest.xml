@@ -36,7 +36,8 @@
         </activity>
         <activity
             android:name=".ui.DetailsActivity"
-            android:label="Details">
+            android:label="Details"
+            android:logo="@drawable/ic_back">
             </activity>
 
         <provider
@@ -51,10 +52,6 @@
             android:label="@string/title_activity_user" >
 
         </activity>
-
-        <service
-            android:name=".core.service.PostEventService">
-        </service>
     </application>
 
 </manifest>
