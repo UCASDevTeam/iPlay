@@ -58,12 +58,19 @@ public class EventModel implements Serializable{
 
     public void parse(JSONObject jsonObject) throws JSONException {
         eventId = jsonObject.getLong("activityid");
-        createdAt = jsonObject.getString("createdat");
+
+        if (jsonObject.has("createdat"))
+            createdAt = jsonObject.getString("createdat");
+        else
+            createdAt = "";
 //        jointed = jsonObject.getInt("jointed");
 
         /** 注释掉的功能上相同 根据返回的 json 格式选择 **/
         author = new UserModel();
-        author.userId = jsonObject.getInt("authorid");
+        if (jsonObject.has("authorid"))
+            author.userId = jsonObject.getInt("authorid");
+        else
+            author.userId = -1;
         if (jsonObject.has("authornick"))
             author.name = jsonObject.getString("authornick");
         else

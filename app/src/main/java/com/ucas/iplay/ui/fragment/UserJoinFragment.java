@@ -47,14 +47,14 @@ public class UserJoinFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mEventModelList = new ArrayList<EventModel>();
-        mEventListAdapter = new EventListAdapter(getActivity(), mEventModelList);
+        // mEventModelList、mEventListAdapter 的初始化已移到onCreateView方法中，不能在onCreate方法
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
+        mEventModelList = new ArrayList<EventModel>();
+        mEventListAdapter = new EventListAdapter(getActivity(), mEventModelList);
         View view = inflater.inflate(R.layout.fragment_alltag, container, false);
         mListView = (ListView) view.findViewById(R.id.lv_alltag);
         mListView.setAdapter(mEventListAdapter);
