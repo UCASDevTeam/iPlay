@@ -80,7 +80,9 @@ public class NavigationDrawerFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+//        mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        mDrawerListView = (ListView) view.findViewById(R.id.left_drawer);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,7 +91,7 @@ public class NavigationDrawerFragment extends BaseFragment {
         });
         mDrawerListView.setAdapter(new DrawerAdapter(context));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-        return mDrawerListView;
+        return view;
     }
 
     public boolean isDrawerOpen() {

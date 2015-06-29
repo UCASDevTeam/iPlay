@@ -1,6 +1,7 @@
 package com.ucas.iplay.ui.fragment;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
@@ -24,6 +25,7 @@ import com.ucas.iplay.core.db.TagsDataHelper;
 import com.ucas.iplay.core.model.EventModel;
 import com.ucas.iplay.core.model.TagModel;
 import com.ucas.iplay.core.tasker.AllTagsParseTask;
+import com.ucas.iplay.ui.DetailsActivity;
 import com.ucas.iplay.ui.adapter.EventCursorAdapter;
 import com.ucas.iplay.ui.view.EventView;
 import com.ucas.iplay.ui.view.FooterTagsView;
@@ -310,16 +312,19 @@ public class TimeLineFragment extends BaseFragment implements OnRefreshListener,
         long eventId = eventView.getEventId();
 
         Log.e(TAG, "eventid : " + eventId);
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-
-        DetailsFragment detailsFragment = new DetailsFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(DetailsFragment.EVENT_ID, (int)eventId);
-        detailsFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.content_frame, detailsFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        Intent intent = new Intent(getActivity(), DetailsActivity.class);
+        intent.putExtra(DetailsFragment.EVENT_ID, (int)eventId);
+        startActivity(intent);
+//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//
+//        DetailsFragment detailsFragment = new DetailsFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(DetailsFragment.EVENT_ID, (int)eventId);
+//        detailsFragment.setArguments(bundle);
+//        fragmentTransaction.replace(R.id.content_frame, detailsFragment);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
     }
 
     @Override

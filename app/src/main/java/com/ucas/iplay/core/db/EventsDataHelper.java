@@ -108,4 +108,11 @@ public class EventsDataHelper extends BaseDataHelper {
         String[] whereArgs = {String.valueOf(eventId)};
         return update(contentValues, where, whereArgs);
     }
+
+    /**
+     *
+     */
+    public void updateRecord(ContentValues cv) {
+        
+    }
 }
