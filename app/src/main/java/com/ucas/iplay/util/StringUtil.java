@@ -63,7 +63,8 @@ public class StringUtil {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, monthOfYear, dayOfMonth);
         str = str + getDayOfWeekStr(calendar.get(Calendar.DAY_OF_WEEK)) + ", ";
-        return str += year + ", " + (monthOfYear + 1) + ", " + dayOfMonth;
+        str += year + ", " + (monthOfYear + 1) + ", " + dayOfMonth;
+        return str;
     }
 
     public static String parseLongTimeToString(String s) {
@@ -71,6 +72,39 @@ public class StringUtil {
         Date date = new Date(time);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         return df.format(date);
+    }
+
+    /**
+     * 从长整数中解析出全套时间
+     * @param s
+     * @return
+     */
+    public static String parseLongTimeToWholeString(String s) {
+        long time = Long.parseLong(s);
+        Date date = new Date(time);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd ");
+        SimpleDateFormat df1 = new SimpleDateFormat("HH:mm");
+        String sdate = df.format(date);
+        String sdate1 = df1.format(date);
+        Calendar mCalender = Calendar.getInstance();
+        mCalender.setTimeInMillis(time);
+        int hour = mCalender.get(Calendar.HOUR_OF_DAY);
+        if (hour<4)
+            sdate += "凌晨";
+        else if (hour < 8)
+            sdate += "早晨";
+        else if (hour < 11)
+            sdate += "上午";
+        else if (hour < 13)
+            sdate += "中午";
+        else if (hour < 16)
+            sdate += "下午";
+        else if (hour < 20)
+            sdate += "傍晚";
+        else
+            sdate += "夜晚";
+        sdate += sdate1;
+        return sdate;
     }
 
     /**

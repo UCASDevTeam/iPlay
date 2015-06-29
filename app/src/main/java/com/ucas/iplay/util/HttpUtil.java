@@ -195,7 +195,23 @@ public class HttpUtil {
      * @param userId
      * @param responseHandler
      */
-    public static void getUserInfoByUserId(Context context, int userId, JsonHttpResponseHandler responseHandler) {
+    public static void getUserInfoByUserId(Context context, int userId, final JsonHttpResponseHandler responseHandler) {
+        RequestParams params = new RequestParams();
+        SPUtil sp = SPUtil.getSPUtil(context);
+        params.put("sessionid", sp.get("sessionid"));
+        params.put("joinpeopleid",userId);
+        new AsyncHttpClient().post(context, USER_SELFINFO, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
 
     }
 
