@@ -95,7 +95,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        /*  获取发展宽度  */
+        /**  获取发展宽度  */
         Point size = new Point();
         this.getActivity().getWindowManager().getDefaultDisplay().getSize(size);
         displayWidth = size.x;
@@ -108,7 +108,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         mPhoneLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
         mEmailLayout = (RelativeLayout)inflater.inflate(R.layout.fragment_details_items,container,false);
 
-        /*  获取界面组件  */
+        /**  获取界面组件  */
         View view = inflater.inflate(R.layout.fragment_details,container,false);
         mDetailsView = view;
 
@@ -123,7 +123,7 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         //mSupportView = (TextView) mDetailsView.findViewById(R.id.tv_details_supporter);
 
 
-        /*  初始化界面组件 */
+        /**  初始化界面组件 */
         initData();
         drawView();
         /*  设置监听器   */
@@ -172,10 +172,13 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         mTitleView.setText(mEvent.title);
         mContentView.setText(mEvent.content);
 
-        startAt = StringUtil.parseLongTimeToString(mEvent.startAt);
+        /**   从Event中解析出活动开始时间  */
+        startAt = StringUtil.parseLongTimeToWholeString(mEvent.startAt);
 
         TextView dt, lt;
         ImageView iv;
+        /**   地点描述：具体地点 城市/国家
+        *        空格为分隔符             */
         if (mEvent.placeAt!=null && mEvent.placeAt.length()>0) {
             mListView.addView(mPlaceLayout, mListParam);
             iv = (ImageView)mPlaceLayout.findViewById(R.id.iv_details_item_icon);
@@ -192,6 +195,8 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
                 lt.setText("中国");
             }
         }
+        /**   时间描述：hh/mm year-mm-day
+        *        空格为分隔符             */
         if (startAt!=null && startAt.length()>0) {
             mListView.addView(mDateLayout, mListParam);
             iv = (ImageView)mDateLayout.findViewById(R.id.iv_details_item_icon);
@@ -224,20 +229,20 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
                 lt.setText("2015-05-20");
             }
         }
-        if (mEvent.phone!=null && mEvent.phone.length()>0) {
+        if (mEvent.author!=null && mEvent.author.phone != null && mEvent.author.phone.length()>0) {
             mListView.addView(mPhoneLayout, mListParam);
             iv = (ImageView)mPhoneLayout.findViewById(R.id.iv_details_item_icon);
             iv.setImageResource(R.drawable.ic_phone);
             dt = (TextView)mPhoneLayout.findViewById(R.id.tv_details_item_dt);
             lt = (TextView)mPhoneLayout.findViewById(R.id.tv_details_item_lt);
-            int blank = mEvent.phone.indexOf(" ");
+            int blank = mEvent.author.phone.indexOf(" ");
             if (blank > 0) {
-                lt.setText(mEvent.phone.substring(0, blank));
-                dt.setText(mEvent.phone.substring(blank,mEvent.phone.length()));
+                lt.setText(mEvent.author.phone.substring(0, blank));
+                dt.setText(mEvent.author.phone.substring(blank,mEvent.author.phone.length()));
             }
             else {
-                dt.setText(mEvent.phone);
-                lt.setText("2015-05-20");
+                dt.setText(mEvent.author.phone);
+                lt.setText("手机");
             }
         }
         if (mEvent.email!=null && mEvent.email.length()>0) {
@@ -352,8 +357,8 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
         mEvent = mEventsDataHelper.queryById(mEventID);
         if (mEvent == null){
             createTestEvent();
-            getDataFromHttp();
         }
+        getDataFromHttp();
     }
 
     /*  从服务器获取数据    */
@@ -363,11 +368,30 @@ public class DetailsFragment extends BaseFragment implements OnRefreshListener{
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 getModelFromJason(response);
-                getData();
+                getAuthorDataFromHttp();
                 List<EventModel> modles = new ArrayList<EventModel>();
                 modles.add(mEvent);
                 mEventsDataHelper.bulkInsert(modles);
                 mSwipRefreshLayout.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
+    private void getAuthorDataFromHttp(){
+        HttpUtil.getUserInfoByUserId(getActivity(),mEvent.author.userId,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    mEvent.author.parse(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                getData();
+                super.onSuccess(statusCode,headers,response);
             }
 
             @Override
