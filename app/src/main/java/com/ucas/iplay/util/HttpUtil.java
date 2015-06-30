@@ -10,6 +10,7 @@ import com.loopj.android.http.RequestParams;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import static com.ucas.iplay.app.Config.URL.*;
 
 /**
  * Created by ivanchou on 1/21/2015.
@@ -82,7 +83,7 @@ public class HttpUtil {
         params.put("sessionid",sessionid);
         params.put("activityid",eventID);
         params.put("rtype",1);
-        new AsyncHttpClient().post(context,USER_EVENT_STATE, params, new JsonHttpResponseHandler() {
+        new AsyncHttpClient().post(context, USER_EVENT_STATE, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 responseHandler.onSuccess(statusCode, headers, response);
@@ -343,66 +344,116 @@ public class HttpUtil {
 
     }
 
+
+    /**
+     * 对活动进行评论
+     * @param context
+     * @param params
+     * @param responseHandler
+     */
+    public static void commentEvent(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        new AsyncHttpClient().post(context, COMMENT_EVENT, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                responseHandler.onFailure(statusCode, headers, responseString, throwable);
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+
+        });
+    }
+
+    /**
+     * 获取活动的评论
+     * @param context
+     * @param params
+     * @param responseHandler
+     */
+    public static void getConmentsOfEvent(Context context, RequestParams params, final JsonHttpResponseHandler responseHandler) {
+        new AsyncHttpClient().post(context, EVENT_COMMENTS, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                responseHandler.onSuccess(statusCode, headers, response);
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+
+        });
+    }
+
     /** 注册 **/
-    private static final String SIGN_UP = Config.URL.COMMON + "authorize/newregister.html";
+    private static final String SIGN_UP = COMMON + "authorize/newregister.html";
 
-    private static final String SCHOOLS = Config.URL.COMMON + "public/shools.json";
+    private static final String SCHOOLS = COMMON + "public/shools.json";
 
-    private static final String ACADEMIES = Config.URL.COMMON + "public/academies.json";
+    private static final String ACADEMIES = COMMON + "public/academies.json";
 
-    private static final String MAJORS = Config.URL.COMMON + "public/majors.json";
+    private static final String MAJORS = COMMON + "public/majors.json";
 
-    private static final String TAGS = Config.URL.COMMON + "public/tags.json";
+    private static final String TAGS = COMMON + "public/tags.json";
 
     /** 活动列表 **/
-    private static final String LATEST_EVENTS = Config.URL.COMMON + "activities/list.json";
+    private static final String LATEST_EVENTS = COMMON + "activities/list.json";
 
     /** 活动详情 **/
-    private static final String EVENT_DETAILS = Config.URL.COMMON + "activities/show.json";
+    private static final String EVENT_DETAILS = COMMON + "activities/show.json";
 
     /** 登陆 **/
-    private static final String LOG_IN = Config.URL.COMMON + "authorize/login.json";
+    private static final String LOG_IN = COMMON + "authorize/login.json";
 
     /** 登出 **/
-    private static final String LOG_OUT = Config.URL.COMMON + "authorize/logout.html";
+    private static final String LOG_OUT = COMMON + "authorize/logout.html";
 
     /** 创建活动 **/
-    private static final String CREATE_EVENT = Config.URL.COMMON + "activities/create.html";
+    private static final String CREATE_EVENT = COMMON + "activities/create.html";
 
     /** 上传活动图片 **/
-    private static final String UPLOAD_IMAGE = Config.URL.COMMON + "activities/uploadpic.html";
+    private static final String UPLOAD_IMAGE = COMMON + "activities/uploadpic.html";
 
     /** 修改活动图片 **/
-    private static final String MODIFY_IMAGE = Config.URL.COMMON + "activities/changepic.html";
+    private static final String MODIFY_IMAGE = COMMON + "activities/changepic.html";
 
     /** 活动参与者 **/
-    private static final String JOINER = Config.URL.COMMON + "join/show.json";
+    private static final String JOINER = COMMON + "join/show.json";
 
     /** 用户发布的所有活动 **/
-    private static final String USER_EVENTS = Config.URL.COMMON + "activities/createhistory.json";
+    private static final String USER_EVENTS = COMMON + "activities/createhistory.json";
 
     /** 用户对活动的操作 **/
-    private static final String USER_EVENT_STATE = Config.URL.COMMON + "join/changestate.html";
+    private static final String USER_EVENT_STATE = COMMON + "join/changestate.html";
 
     /** 用户参与的所有活动 **/
-    private static final String USER_JOIN_EVENTS = Config.URL.COMMON + "join/joinhistory.json";
+    private static final String USER_JOIN_EVENTS = COMMON + "join/joinhistory.json";
 
     /** 查看个人信息 **/
-    private static final String USER_SELFINFO = Config.URL.COMMON + "authorize/lookselfinfo.json";
+    private static final String USER_SELFINFO = COMMON + "authorize/lookselfinfo.json";
 
     /** 修改补全个人信息 **/
-    private static final String CHANGE_SELFINFO = Config.URL.COMMON + "authorize/changeselfinfo.html";
+    private static final String CHANGE_SELFINFO = COMMON + "authorize/changeselfinfo.html";
 
     /** 上传用户头像 **/
-    private static final String UPLOAD_AVATAR = Config.URL.COMMON + "authorize/uploadphoto.html";
+    private static final String UPLOAD_AVATAR = COMMON + "authorize/uploadphoto.html";
 
     /** 修改用户头像 **/
-    private static final String MODIFY_AVATAR = Config.URL.COMMON + "authorize/changephoto.html";
+    private static final String MODIFY_AVATAR = COMMON + "authorize/changephoto.html";
 
     /** 修改活动信息 **/
-    private static final String CHANGE_EVENTINFO = Config.URL.COMMON + "activities/changeinfo.json";
+    private static final String CHANGE_EVENTINFO = COMMON + "activities/changeinfo.json";
 
     /** 删除活动 **/
-    private static final String DEL_EVENT = Config.URL.COMMON + "activities/delete.html";
+    private static final String DEL_EVENT = COMMON + "activities/delete.html";
 
+    /** 评论活动 **/
+    private static final String COMMENT_EVENT = COMMON + "comments/create.html";
+
+    /** 获取活动评论 **/
+    private static final String EVENT_COMMENTS = COMMON + "comments/show.json";
 }

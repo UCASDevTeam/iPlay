@@ -45,4 +45,7 @@
     <string name="details_tag_author_nick">社团</string>
     <string name="details_tag_email">邮箱</string>
     <string name="details_tag_phone">手机</string>
+    <string name="title_activity_comments">CommentsActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

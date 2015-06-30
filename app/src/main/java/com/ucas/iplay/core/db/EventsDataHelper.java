@@ -85,6 +85,11 @@ public class EventsDataHelper extends BaseDataHelper {
         }
     }
 
+    public Uri insert(EventModel event) {
+        ContentValues values = getContentValues(event);
+        return insert(values);
+    }
+
     public int bulkInsert(List<EventModel> events) {
         ArrayList<ContentValues> contentValues = new ArrayList<ContentValues>();
         for(EventModel event : events){
@@ -110,9 +115,34 @@ public class EventsDataHelper extends BaseDataHelper {
     }
 
     /**
-     *
+     * 更新单个 Event
+     * @param eventId
+     * @param endrollBefore
+     * @param placeAt
+     * @param content
+     * @param tags
+     * @param maxPeople
      */
-    public void updateRecord(ContentValues cv) {
-        
+    public int updateEvent(int eventId, String endrollBefore, String placeAt, String content, Long tags, Long maxPeople) {
+        ContentValues contentValues = new ContentValues();
+        if (endrollBefore != null) {
+            contentValues.put(BaseEventsDBInfo.ENDROLL_BEFORE, endrollBefore);
+        }
+        if (placeAt != null) {
+            contentValues.put(BaseEventsDBInfo.PLACE_AT, placeAt);
+        }
+        if (content != null) {
+            contentValues.put(BaseEventsDBInfo.CONTENT, content);
+        }
+        if (tags != null) {
+            contentValues.put(BaseEventsDBInfo.TAGS, tags);
+        }
+        if (maxPeople != null) {
+            contentValues.put(BaseEventsDBInfo.MAX_PEOPLE, maxPeople);
+        }
+
+        String where = BaseEventsDBInfo.EVENT_ID + "=?";
+        String[] whereArgs = {String.valueOf(eventId)};
+        return update(contentValues, where, whereArgs);
     }
 }
