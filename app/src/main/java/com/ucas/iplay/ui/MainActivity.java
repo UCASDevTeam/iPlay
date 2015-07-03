@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import com.ucas.iplay.R;
@@ -38,19 +38,26 @@ public class MainActivity extends BaseActivity implements NavigationDrawerCallba
     private JointedFragment mJointedFragment;
     private PostNewFragment mPostNewFragment;
     private SettingFragment mSettingFragment;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        mToolbar.setNavigationIcon(R.drawable.ic_drawer);
+
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
 
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
     }
+
+
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
