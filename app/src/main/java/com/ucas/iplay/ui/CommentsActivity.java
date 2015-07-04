@@ -1,9 +1,9 @@
 package com.ucas.iplay.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -12,6 +12,7 @@ import com.ucas.iplay.R;
 import com.ucas.iplay.core.model.CommentModel;
 import com.ucas.iplay.ui.adapter.CommentsAdapter;
 import com.ucas.iplay.ui.base.BaseActivity;
+import com.ucas.iplay.ui.view.CommentView;
 import com.ucas.iplay.util.HttpUtil;
 import com.ucas.iplay.util.SPUtil;
 
@@ -28,10 +29,10 @@ import java.util.List;
  * Created by ivanchou on 1/21/2015.
  * @author ivanchou
  */
-public class CommentsActivity extends BaseActivity {
+public class CommentsActivity extends BaseActivity implements CommentView.OnSendClickListener{
 
     private ListView mCommentsLv;
-    private EditText mCommentEt;
+    private CommentView mCommentCv;
 
     private int eventID;
     private int pageSize = 20;
@@ -56,7 +57,7 @@ public class CommentsActivity extends BaseActivity {
 
     public void initViews() {
         mCommentsLv = (ListView) findViewById(R.id.lv_comments);
-        mCommentEt = (EditText) findViewById(R.id.et_comment);
+        mCommentCv = (CommentView) findViewById(R.id.cv_comment);
         mCommentsLv.setAdapter(mCommentsAdapter);
     }
 
@@ -71,6 +72,7 @@ public class CommentsActivity extends BaseActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                Log.e(TAG, response.toString());
                 try {
                     getModels(response.getJSONArray("commentslist"));
                     mCommentsAdapter.notifyDataSetChanged();
@@ -84,7 +86,7 @@ public class CommentsActivity extends BaseActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-
+                Log.e(TAG, responseString);
             }
         });
     }
@@ -95,6 +97,28 @@ public class CommentsActivity extends BaseActivity {
             model.parse(response.getJSONObject(i));
             comments.add(model);
         }
+    }
+
+    @Override
+    public void onSendClick(String text) {
+        RequestParams params = new RequestParams();
+        params.put("sessionid", sp.get("sessionid"));
+        params.put("activityid", eventID);
+        params.put("content", text);
+
+        HttpUtil.commentEvent(this, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.e(TAG, response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                Log.e(TAG, responseString);
+            }
+        });
     }
 
     @Override
