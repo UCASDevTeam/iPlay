@@ -80,6 +80,7 @@ public class StringUtil {
      * @return
      */
     public static String parseLongTimeToWholeString(String s) {
+        if (s.length()<1) return "";
         long time = Long.parseLong(s);
         Date date = new Date(time);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd ");
